@@ -13,11 +13,11 @@ using System.Windows.Forms;
 
 namespace Test.Form_Application
 {
-    public partial class Employee_Form : Base_Form
+    public partial class Service_Form : Base_Form
     {
         private bool isRowSelected = false;
         private int selectedId;
-        public Employee_Form()
+        public Service_Form()
         {
             InitializeComponent();
         }
@@ -70,28 +70,25 @@ namespace Test.Form_Application
         {
             EnabledField(false);
             EnabledField(true, false);
+            // Connection string
+            SqlConnection con = ConnDatabase.Conn();
+            con.Open();
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT Employee.Id, Employee.Password, Employee.Name, Employee.Email, Employee.PhoneNumber, Employee.Address, Employee.DateofBirth, Job.Name AS JobTitle, Employee.Salary FROM Employee JOIN Job ON Employee.IdJob = Job.Id", con);
+            // Datatable
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
 
-            DataTable? dt = Data_Access_Layer.JoinData("Employee", "Job");
             dtViewEmployee.DataSource = dt;
-            dtViewEmployee.AutoGenerateColumns = true;
 
-            dtViewEmployee.Columns.Remove("Password");
-            dtViewEmployee.Columns.Remove("IdJob");
-
-            dtViewEmployee.Columns["Id"].DisplayIndex = 0;
-            dtViewEmployee.Columns["Name"].DisplayIndex = 1;
-            dtViewEmployee.Columns["Email"].DisplayIndex = 2;
-            dtViewEmployee.Columns["PhoneNumber"].DisplayIndex = 3;
-            dtViewEmployee.Columns["Address"].DisplayIndex = 4;
-            dtViewEmployee.Columns["DateofBirth"].DisplayIndex = 5;
-            dtViewEmployee.Columns["JobTitle"].DisplayIndex = 6;
-            dtViewEmployee.Columns["Salary"].DisplayIndex = 7;
-
-            dtViewEmployee.Columns["Id"].HeaderText = "Employee Id";
-            dtViewEmployee.Columns["PhoneNumber"].HeaderText = "Phone Number";
-            dtViewEmployee.Columns["Address"].HeaderText = "Address";
-            dtViewEmployee.Columns["DateofBirth"].HeaderText = "Date of Birth";
-            dtViewEmployee.Columns["JobTitle"].HeaderText = "Job Title";
+            // Collumn header each field from database
+            dtViewEmployee.Columns.Add("Id", "Employee Id");
+            dtViewEmployee.Columns.Add("Name", "Name");
+            dtViewEmployee.Columns.Add("Email", "Email");
+            dtViewEmployee.Columns.Add("PhoneNumber", "Phone Number");
+            dtViewEmployee.Columns.Add("Address", "Address");
+            dtViewEmployee.Columns.Add("DateofBirth", "Date of Birth");
+            dtViewEmployee.Columns.Add("JobTitle", "Job Title");
+            dtViewEmployee.Columns.Add("Salary", "Salary");
 
             foreach (DataGridViewColumn column in dtViewEmployee.Columns)
             {
@@ -99,17 +96,17 @@ namespace Test.Form_Application
             }
 
             // Combo box display name job
-            DataTable? dta = Data_Access_Layer.SelectData("Job");
+            SqlDataAdapter sqa = new SqlDataAdapter("SELECT Id, Name FROM Job", con);
+
+            DataTable dta = new DataTable();
+            sqa.Fill(dta);
 
             DataTable newdta = new DataTable();
             newdta.Columns.Add("JobId");
             newdta.Columns.Add("Name");
             newdta.Rows.Add(0, "");
 
-            if (dta != null)
-            {
-                newdta.Merge(dta);
-            }
+            newdta.Merge(dta);
 
             inp_combo.DisplayMember = "Name";
             inp_combo.ValueMember = "JobId";
@@ -118,6 +115,7 @@ namespace Test.Form_Application
             inp_combo.SelectedIndex = 0;
 
             inp_combo.DropDownStyle = ComboBoxStyle.DropDownList;
+            con.Close();
             dtViewEmployee.SelectionChanged += dtViewEmployee_SelectionChanged; // Attach SelectionChanged event handler
         }
 
@@ -134,14 +132,13 @@ namespace Test.Form_Application
                 selectedId = Convert.ToInt32(row.Cells["Id"].Value);
 
                 // Do something with the data ID...
-                // SqlConnection con = ConnDatabase.Conn();
-                // con.Open();
-                // SqlDataAdapter dt_Emp = new SqlDataAdapter("SELECT Employee.Id, Employee.Password, Employee.Name, Employee.Email, Employee.PhoneNumber, Employee.Address, Employee.DateofBirth, Employee.IdJob, Employee.Salary FROM Employee WHERE Employee.Id = @IdEmployee", con);
-                // dt_Emp.SelectCommand.Parameters.AddWithValue("@IdEmployee", selectedId);
-                // // 
-                // DataTable dt = new DataTable();
-                // dt_Emp.Fill(dt);
-                DataTable? dt = Data_Access_Layer.SelectDataWhere("Employee", selectedId);
+                SqlConnection con = ConnDatabase.Conn();
+                con.Open();
+                SqlDataAdapter dt_Emp = new SqlDataAdapter("SELECT Employee.Id, Employee.Password, Employee.Name, Employee.Email, Employee.PhoneNumber, Employee.Address, Employee.DateofBirth, Employee.IdJob, Employee.Salary FROM Employee WHERE Employee.Id = @IdEmployee", con);
+                dt_Emp.SelectCommand.Parameters.AddWithValue("@IdEmployee", selectedId);
+                // 
+                DataTable dt = new DataTable();
+                dt_Emp.Fill(dt);
 
                 if (dt.Rows.Count > 0)
                 {
@@ -155,13 +152,12 @@ namespace Test.Form_Application
                     inp_address.Text = DtField["Address"].ToString();
 
                     string? dateOfBirthString = DtField["DateofBirth"]?.ToString();
-                    if (dateOfBirthString != null)
-                    {
-                        DateTime dateOfBirth = DateTime.ParseExact(dateOfBirthString, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                        inp_date.Value = dateOfBirth;
-                    }
+                    DateTime dateOfBirth = dateOfBirthString != null ? DateTime.ParseExact(dateOfBirthString, "dd/MM/yyyy", CultureInfo.InvariantCulture) : DateTime.MinValue;
+                    inp_date.Value = dateOfBirth;
+
 
                     inp_combo.SelectedIndex = Convert.ToInt32(DtField["IdJob"]);
+
                     decimal salary = Convert.ToDecimal(DtField["Salary"]);
                     inp_numeric.Value = Math.Floor(salary);
                 }
@@ -178,7 +174,7 @@ namespace Test.Form_Application
                     inp_combo.SelectedIndex = 0;
                     inp_numeric.Value = 0;
                 }
-                // con.Close();
+                con.Close();
             }
         }
         private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -189,9 +185,12 @@ namespace Test.Form_Application
 
         private void btn_insert_Click(object sender, EventArgs e)
         {
-            ClearField();
             EnabledField(true);
             EnabledField(false, true);
+            ClearField();
+            SqlConnection con = ConnDatabase.Conn();
+            con.Open();
+            SqlDataAdapter sqa = new SqlDataAdapter("INSERT INTO Employee VALUES", con);
         }
         private void btn_update_Click(object sender, EventArgs e)
         {
@@ -214,14 +213,18 @@ namespace Test.Form_Application
                 return;
             }
 
-            DialogResult result = MessageBox.Show("Would you like to delete this data?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("Do you want to perform the update?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
-                // Perform the delete logic...
+                // Perform the update logic...
 
                 // Close the MessageBox
-                MessageBox.Show("Delete completed!", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Update completed.", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (result == DialogResult.Cancel)
+            {
+                // Close the MessageBox
             }
         }
         private void btn_save_Click(object sender, EventArgs e)
@@ -234,6 +237,7 @@ namespace Test.Form_Application
         {
             EnabledField(false);
             EnabledField(true, false);
+            MessageBox.Show($"{"Cancel"}");
         }
     }
 }

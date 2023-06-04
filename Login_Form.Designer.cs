@@ -79,6 +79,7 @@
             this.input_username.Name = "input_username";
             this.input_username.Size = new System.Drawing.Size(100, 20);
             this.input_username.TabIndex = 3;
+            this.input_username.Text = "apeschka1d@google.com.hk";
             // 
             // input_password
             // 
@@ -87,6 +88,8 @@
             this.input_password.Name = "input_password";
             this.input_password.Size = new System.Drawing.Size(100, 20);
             this.input_password.TabIndex = 4;
+            this.input_password.UseSystemPasswordChar = true;
+            this.input_password.Text = "dDsgZdH";
             // 
             // btn_login
             // 
@@ -107,6 +110,7 @@
             this.button3.TabIndex = 7;
             this.button3.Text = "Reset";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.btn_reset_Click);
             // 
             // Login_Form
             // 

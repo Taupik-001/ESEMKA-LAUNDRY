@@ -1,6 +1,6 @@
 ﻿namespace Test.Form_Application
 {
-    partial class Service_Form
+    partial class Transaction_Deposit_Form
     {
         /// <summary>
         /// Required designer variable.
@@ -95,6 +95,8 @@
             this.dtViewEmployee.Name = "dtViewEmployee";
             this.dtViewEmployee.Size = new System.Drawing.Size(750, 150);
             this.dtViewEmployee.TabIndex = 3;
+            this.dtViewEmployee.AutoGenerateColumns = false;
+            this.dtViewEmployee.RowHeadersVisible = false;
             this.dtViewEmployee.ReadOnly = true;
             this.dtViewEmployee.AllowUserToResizeColumns = false;
             this.dtViewEmployee.AllowUserToResizeRows = false;
@@ -318,7 +320,7 @@
             this.btn_cancel.UseVisualStyleBackColor = true;
             this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
-            // Service_Form
+            // Transaction_Deposit_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -352,7 +354,7 @@
             this.Controls.Add(this.btn_delete);
             this.Controls.Add(this.btn_save);
             this.Controls.Add(this.btn_cancel);
-            this.Name = "Service_Form";
+            this.Name = "Transaction_Deposit_Form";
             this.Text = "Manage Employee";
             this.Load += new System.EventHandler(this.Manage_Employee_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dtViewEmployee)).EndInit();

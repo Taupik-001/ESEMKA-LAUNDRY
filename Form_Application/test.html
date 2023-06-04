@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Grid Example</title>
+    <style>
+        .grid-container {
+            width: 650px;
+            height: 400px;
+            display: grid;
+            grid-template-columns: repeat(8, 50px);
+            /* 8 columns with width 100px each */
+            grid-template-rows: repeat(9, 50px);
+            /* 9 rows with height 50px each */
+        }
+
+        .grid-box {
+            border: 1px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid-container">
+        <!-- Grid boxes will be dynamically generated here -->
+    </div>
+    <script>
+        // Generate grid boxes with coordinates
+        var gridContainer = document.querySelector('.grid-container');
+        var numColumns = 8;
+        var numRows = 9;
+    
+        for (var y = 0; y < numRows; y++) {
+            for (var x = 0; x < numColumns; x++) {
+                var gridBox = document.createElement('div');
+                gridBox.className = 'grid-box';
+                valx = x * 100 + 150;
+                valy = y * 50 + 50;
+                gridBox.innerText = valx + ', ' + valy;
+    
+                gridContainer.appendChild(gridBox);
+            }
+        }
+    </script>
+    
+</body>
+
+</html>

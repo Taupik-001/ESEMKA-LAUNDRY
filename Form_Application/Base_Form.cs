@@ -39,7 +39,6 @@ namespace Test
         {
             display_time.Text = DateTime.Now.ToString();
             timer1.Start();
-
         }
 
         private void display_time_Click(object sender, EventArgs e)
@@ -73,26 +72,36 @@ namespace Test
         private void button3_Click(object sender, EventArgs e)
         {
             this.Hide();
+            Form_Application.Service_Form manage_service = new Form_Application.Service_Form();
+            manage_service.Show();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             this.Hide();
+            Form_Application.Package_Form manage_package = new Form_Application.Package_Form();
+            manage_package.Show();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             this.Hide();
+            Form_Application.Transaction_Deposit_Form transaction_deposit = new Form_Application.Transaction_Deposit_Form();
+            transaction_deposit.Show();
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
             this.Hide();
+            Form_Application.Prepaid_Package_Form prepaid_package = new Form_Application.Prepaid_Package_Form();
+            prepaid_package.Show();
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
             this.Hide();
+            Form_Application.View_Transaction_Form view_transaction = new Form_Application.View_Transaction_Form();
+            view_transaction.Show();
         }
     }
 }

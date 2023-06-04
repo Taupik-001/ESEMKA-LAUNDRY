@@ -17,15 +17,15 @@ namespace Test
         {
             InitializeComponent();
         }
-        public static string username;
+        public static string? username;
         public static string recby
         {
-            get { return username; }
+            get { return username ?? string.Empty; }
             set { username = value; }
         }
         public static string logout
         {
-            get { return username; }
+            get { username = null; return string.Empty; }
             set { username = null; }
         }
 
@@ -61,9 +61,8 @@ namespace Test
 
             if (dt.Rows.Count == 1)
             {
-                recby = dt.Rows[0][2].ToString();
+                recby = dt.Rows[0][2].ToString() ?? string.Empty;
                 this.Hide();
-                MessageBox.Show($"{"Selamat anda berhasil Login!"}");
                 Main_Form main = new Main_Form();
                 main.Show();
             }
@@ -71,6 +70,11 @@ namespace Test
             {
                 MessageBox.Show("Please Try Again, Your Data is not Valid!");
             }
+        }
+        private void btn_reset_Click(object sender, EventArgs e)
+        {
+            input_username.Clear();
+            input_password.Clear();
         }
     }
 }

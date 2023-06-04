@@ -61,7 +61,7 @@ namespace Test
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(732, 37);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(800, 50);
             this.flowLayoutPanel2.TabIndex = 9;
             // 
             // btn_logout
@@ -185,16 +185,16 @@ namespace Test
             this.flowLayoutPanel1.Controls.Add(this.button6);
             this.flowLayoutPanel1.Controls.Add(this.button7);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 37);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 50);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(122, 289);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(150, 400);
             this.flowLayoutPanel1.TabIndex = 10;
             // 
             // Base_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(732, 326);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Name = "Base_Form";
