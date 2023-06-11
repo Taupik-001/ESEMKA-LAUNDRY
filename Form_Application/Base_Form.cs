@@ -16,14 +16,12 @@ namespace Test
         {
             InitializeComponent();
         }
-
         private void Base_Form_Load(object sender, EventArgs e)
         {
             timer1.Start();
             display_time.Text = DateTime.Now.ToString();
             display_username.Text = "Hello, " + Login_Form.recby;
             this.Hide();
-            flowLayoutPanel1.Hide();
         }
 
         private void btn_logout_Click(object sender, EventArgs e)
@@ -81,6 +79,7 @@ namespace Test
             this.Hide();
             Form_Application.Package_Form manage_package = new Form_Application.Package_Form();
             manage_package.Show();
+
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -101,6 +100,12 @@ namespace Test
         {
             this.Hide();
             Form_Application.View_Transaction_Form view_transaction = new Form_Application.View_Transaction_Form();
+            view_transaction.Show();
+        }
+        private void button8_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form_Application.Data_History view_transaction = new Form_Application.Data_History();
             view_transaction.Show();
         }
     }

@@ -28,200 +28,244 @@ namespace Test
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btn_logout = new System.Windows.Forms.Button();
-            this.display_time = new System.Windows.Forms.Label();
-            this.display_username = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel2.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            timer1 = new System.Windows.Forms.Timer(components);
+            flowLayoutPanel2 = new FlowLayoutPanel();
+            button1 = new Button();
+            display_time = new Label();
+            display_username = new Label();
+            btn_logout = new Button();
+            button8 = new Button();
+            button7 = new Button();
+            button6 = new Button();
+            button5 = new Button();
+            button4 = new Button();
+            button3 = new Button();
+            button2 = new Button();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            label1 = new Label();
+            flowLayoutPanel2.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
+            SuspendLayout();
             // 
             // timer1
             // 
-            this.timer1.Enabled = true;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            timer1.Enabled = true;
+            timer1.Tick += timer1_Tick;
             // 
             // flowLayoutPanel2
             // 
-            this.flowLayoutPanel2.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.flowLayoutPanel2.Controls.Add(this.button1);
-            this.flowLayoutPanel2.Controls.Add(this.display_time);
-            this.flowLayoutPanel2.Controls.Add(this.display_username);
-            this.flowLayoutPanel2.Controls.Add(this.btn_logout);
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(800, 50);
-            this.flowLayoutPanel2.TabIndex = 9;
-            // 
-            // btn_logout
-            // 
-            this.btn_logout.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btn_logout.Location = new System.Drawing.Point(199, 3);
-            this.btn_logout.Name = "btn_logout";
-            this.btn_logout.Size = new System.Drawing.Size(75, 23);
-            this.btn_logout.TabIndex = 2;
-            this.btn_logout.Text = "Logout";
-            this.btn_logout.UseVisualStyleBackColor = true;
-            this.btn_logout.Click += new System.EventHandler(this.btn_logout_Click);
-            // 
-            // display_time
-            // 
-            this.display_time.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.display_time.AutoSize = true;
-            this.display_time.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.display_time.Location = new System.Drawing.Point(84, 8);
-            this.display_time.Name = "display_time";
-            this.display_time.Size = new System.Drawing.Size(38, 13);
-            this.display_time.TabIndex = 1;
-            this.display_time.Text = "<time>";
-            this.display_time.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.display_time.Click += new System.EventHandler(this.display_time_Click);
-            // 
-            // display_username
-            // 
-            this.display_username.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.display_username.AutoSize = true;
-            this.display_username.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.display_username.Location = new System.Drawing.Point(128, 8);
-            this.display_username.Name = "display_username";
-            this.display_username.Size = new System.Drawing.Size(65, 13);
-            this.display_username.TabIndex = 0;
-            this.display_username.Text = "<username>";
+            flowLayoutPanel2.BackColor = SystemColors.ActiveCaptionText;
+            flowLayoutPanel2.Controls.Add(button1);
+            flowLayoutPanel2.Controls.Add(label1);
+            flowLayoutPanel2.Controls.Add(display_time);
+            flowLayoutPanel2.Controls.Add(display_username);
+            flowLayoutPanel2.Controls.Add(btn_logout);
+            flowLayoutPanel2.Dock = DockStyle.Top;
+            flowLayoutPanel2.Location = new Point(0, 0);
+            flowLayoutPanel2.Margin = new Padding(4, 3, 4, 3);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            flowLayoutPanel2.Size = new Size(933, 58);
+            flowLayoutPanel2.TabIndex = 9;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(3, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Toggle";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            button1.Location = new Point(4, 3);
+            button1.Margin = new Padding(4, 3, 4, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(88, 27);
+            button1.TabIndex = 3;
+            button1.Text = "Toggle";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // display_time
+            // 
+            display_time.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            display_time.AutoSize = true;
+            display_time.BackColor = SystemColors.ButtonFace;
+            display_time.Location = new Point(230, 9);
+            display_time.Margin = new Padding(4, 0, 4, 0);
+            display_time.Name = "display_time";
+            display_time.Size = new Size(47, 15);
+            display_time.TabIndex = 1;
+            display_time.Text = "<time>";
+            display_time.TextAlign = ContentAlignment.MiddleCenter;
+            display_time.Click += display_time_Click;
+            // 
+            // display_username
+            // 
+            display_username.Anchor = AnchorStyles.Right;
+            display_username.AutoSize = true;
+            display_username.BackColor = SystemColors.ButtonFace;
+            display_username.Location = new Point(285, 9);
+            display_username.Margin = new Padding(4, 0, 4, 0);
+            display_username.Name = "display_username";
+            display_username.Size = new Size(75, 15);
+            display_username.TabIndex = 0;
+            display_username.Text = "<username>";
+            // 
+            // btn_logout
+            // 
+            btn_logout.Anchor = AnchorStyles.Right;
+            btn_logout.Location = new Point(368, 3);
+            btn_logout.Margin = new Padding(4, 3, 4, 3);
+            btn_logout.Name = "btn_logout";
+            btn_logout.Size = new Size(88, 27);
+            btn_logout.TabIndex = 2;
+            btn_logout.Text = "Logout";
+            btn_logout.UseVisualStyleBackColor = true;
+            btn_logout.Click += btn_logout_Click;
+            // 
+            // button8
+            // 
+            button8.AutoSize = true;
+            button8.Location = new Point(4, 213);
+            button8.Margin = new Padding(4, 3, 4, 3);
+            button8.Name = "button8";
+            button8.Size = new Size(122, 29);
+            button8.TabIndex = 5;
+            button8.Text = "History Transaction";
+            button8.UseVisualStyleBackColor = true;
+            button8.Click += button8_Click;
             // 
             // button7
             // 
-            this.button7.AutoSize = true;
-            this.button7.Location = new System.Drawing.Point(3, 148);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(99, 23);
-            this.button7.TabIndex = 5;
-            this.button7.Text = "View Transaction";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            button7.AutoSize = true;
+            button7.Location = new Point(4, 178);
+            button7.Margin = new Padding(4, 3, 4, 3);
+            button7.Name = "button7";
+            button7.Size = new Size(122, 29);
+            button7.TabIndex = 5;
+            button7.Text = "View Transaction";
+            button7.UseVisualStyleBackColor = true;
+            button7.Click += button7_Click;
             // 
             // button6
             // 
-            this.button6.AutoSize = true;
-            this.button6.Location = new System.Drawing.Point(3, 119);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(99, 23);
-            this.button6.TabIndex = 4;
-            this.button6.Text = "Prepaid Package";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            button6.AutoSize = true;
+            button6.Location = new Point(4, 143);
+            button6.Margin = new Padding(4, 3, 4, 3);
+            button6.Name = "button6";
+            button6.Size = new Size(121, 29);
+            button6.TabIndex = 4;
+            button6.Text = "Prepaid Package";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
             // 
             // button5
             // 
-            this.button5.AutoSize = true;
-            this.button5.Location = new System.Drawing.Point(3, 90);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(112, 23);
-            this.button5.TabIndex = 3;
-            this.button5.Text = "Transaction Deposit";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            button5.AutoSize = true;
+            button5.Location = new Point(4, 108);
+            button5.Margin = new Padding(4, 3, 4, 3);
+            button5.Name = "button5";
+            button5.Size = new Size(140, 29);
+            button5.TabIndex = 3;
+            button5.Text = "Transaction Deposit";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
             // 
             // button4
             // 
-            this.button4.AutoSize = true;
-            this.button4.Location = new System.Drawing.Point(3, 61);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(102, 23);
-            this.button4.TabIndex = 2;
-            this.button4.Text = "Manage Package";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            button4.AutoSize = true;
+            button4.Location = new Point(4, 73);
+            button4.Margin = new Padding(4, 3, 4, 3);
+            button4.Name = "button4";
+            button4.Size = new Size(125, 29);
+            button4.TabIndex = 2;
+            button4.Text = "Manage Package";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // button3
             // 
-            this.button3.AutoSize = true;
-            this.button3.Location = new System.Drawing.Point(3, 32);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(95, 23);
-            this.button3.TabIndex = 1;
-            this.button3.Text = "Manage Service";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            button3.AutoSize = true;
+            button3.Location = new Point(4, 38);
+            button3.Margin = new Padding(4, 3, 4, 3);
+            button3.Name = "button3";
+            button3.Size = new Size(117, 29);
+            button3.TabIndex = 1;
+            button3.Text = "Manage Service";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // button2
             // 
-            this.button2.AutoSize = true;
-            this.button2.Location = new System.Drawing.Point(3, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(105, 23);
-            this.button2.TabIndex = 0;
-            this.button2.Text = "Manage Employee";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            button2.AutoSize = true;
+            button2.Location = new Point(4, 3);
+            button2.Margin = new Padding(4, 3, 4, 3);
+            button2.Name = "button2";
+            button2.Size = new Size(134, 29);
+            button2.TabIndex = 0;
+            button2.Text = "Manage Employee";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.flowLayoutPanel1.Controls.Add(this.button2);
-            this.flowLayoutPanel1.Controls.Add(this.button3);
-            this.flowLayoutPanel1.Controls.Add(this.button4);
-            this.flowLayoutPanel1.Controls.Add(this.button5);
-            this.flowLayoutPanel1.Controls.Add(this.button6);
-            this.flowLayoutPanel1.Controls.Add(this.button7);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 50);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(150, 400);
-            this.flowLayoutPanel1.TabIndex = 10;
+            flowLayoutPanel1.BackColor = SystemColors.ActiveCaption;
+            flowLayoutPanel1.Controls.Add(button2);
+            flowLayoutPanel1.Controls.Add(button3);
+            flowLayoutPanel1.Controls.Add(button4);
+            flowLayoutPanel1.Controls.Add(button5);
+            flowLayoutPanel1.Controls.Add(button6);
+            flowLayoutPanel1.Controls.Add(button7);
+            flowLayoutPanel1.Controls.Add(button8);
+            flowLayoutPanel1.Dock = DockStyle.Left;
+            flowLayoutPanel1.Location = new Point(0, 58);
+            flowLayoutPanel1.Margin = new Padding(4, 3, 4, 3);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(175, 461);
+            flowLayoutPanel1.TabIndex = 10;
+            // 
+            // label1
+            // 
+            label1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            label1.AutoSize = true;
+            label1.BackColor = Color.WhiteSmoke;
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.ForeColor = SystemColors.ControlText;
+            label1.Location = new Point(99, 6);
+            label1.Name = "label1";
+            label1.Size = new Size(124, 21);
+            label1.TabIndex = 4;
+            label1.Text = "Esemka Laundry";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // Base_Form
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.flowLayoutPanel1);
-            this.Controls.Add(this.flowLayoutPanel2);
-            this.Name = "Base_Form";
-            this.Text = "Main Menu";
-            this.Load += new System.EventHandler(this.Base_Form_Load);
-            this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(933, 519);
+            Controls.Add(flowLayoutPanel1);
+            Controls.Add(flowLayoutPanel2);
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "Base_Form";
+            Text = "Main Menu";
+            Load += Base_Form_Load;
+            flowLayoutPanel2.ResumeLayout(false);
+            flowLayoutPanel2.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion
 
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label display_time;
-        private System.Windows.Forms.Label display_username;
-        private System.Windows.Forms.Button btn_logout;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private Button button1;
+        private Label display_time;
+        private Label display_username;
+        private Button btn_logout;
+        private Button button8;
+        private Button button7;
+        private Button button6;
+        private Button button5;
+        private Button button4;
+        private Button button3;
+        private Button button2;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private Label label1;
     }
 }

@@ -28,27 +28,34 @@ namespace Test
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            label1 = new Label();
+            SuspendLayout();
             // 
             // label1
             // 
-            this.label1.BackColor = System.Drawing.SystemColors.Info;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(122, 37);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(610, 289);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "Welcome";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            label1.BackColor = SystemColors.Info;
+            label1.Dock = DockStyle.Fill;
+            label1.Location = new Point(0, 58);
+            label1.Name = "label1";
+            label1.Size = new Size(933, 461);
+            label1.TabIndex = 12;
+            label1.Text = "Welcome";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
+            label1.Click += label1_Click;
             // 
             // Main_Form
             // 
-            this.Controls.Add(this.label1);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            ClientSize = new Size(933, 519);
+            Controls.Add(label1);
+            Name = "Main_Form";
+            Load += Main_Form_Load;
+            Controls.SetChildIndex(label1, 0);
+            ResumeLayout(false);
         }
 
         #endregion
-        
-        private System.Windows.Forms.Label label1;
+
+        private Label label1;
     }
 }

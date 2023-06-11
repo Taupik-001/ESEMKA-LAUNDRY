@@ -1,6 +1,6 @@
 ﻿namespace Test.Form_Application
 {
-    partial class View_Transaction_Form
+    partial class Package_Form
     {
         /// <summary>
         /// Required designer variable.
@@ -28,370 +28,246 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbl_title = new System.Windows.Forms.Label();
-            this.lbl_search = new System.Windows.Forms.Label();
-            this.inp_search = new System.Windows.Forms.TextBox();
-            this.dtViewEmployee = new System.Windows.Forms.DataGridView();
-            this.lbl_id = new System.Windows.Forms.Label();
-            this.inp_id = new System.Windows.Forms.TextBox();
-            this.lbl_name = new System.Windows.Forms.Label();
-            this.inp_name = new System.Windows.Forms.TextBox();
-            this.lbl_email = new System.Windows.Forms.Label();
-            this.inp_email = new System.Windows.Forms.TextBox();
-            this.lbl_phone = new System.Windows.Forms.Label();
-            this.inp_phone = new System.Windows.Forms.TextBox();
-            this.lbl_address = new System.Windows.Forms.Label();
-            this.inp_address = new System.Windows.Forms.TextBox();
-            this.lbl_date = new System.Windows.Forms.Label();
-            this.inp_date = new System.Windows.Forms.DateTimePicker();
-            this.lbl_combo = new System.Windows.Forms.Label();
-            this.inp_combo = new System.Windows.Forms.ComboBox();
-            this.lbl_numeric = new System.Windows.Forms.Label();
-            this.inp_numeric = new System.Windows.Forms.NumericUpDown();
-            this.lbl_password = new System.Windows.Forms.Label();
-            this.inp_password = new System.Windows.Forms.TextBox();
-            this.lbl_conpassword = new System.Windows.Forms.Label();
-            this.inp_conpassword = new System.Windows.Forms.TextBox();
-            this.btn_insert = new System.Windows.Forms.Button();
-            this.btn_update = new System.Windows.Forms.Button();
-            this.btn_delete = new System.Windows.Forms.Button();
-            this.btn_save = new System.Windows.Forms.Button();
-            this.btn_cancel = new System.Windows.Forms.Button();
-            this.inp_date = new System.Windows.Forms.DateTimePicker();
-            ((System.ComponentModel.ISupportInitialize)(this.dtViewEmployee)).BeginInit();
-            this.SuspendLayout();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            label5 = new Label();
+            label6 = new Label();
+            dataViewPackage = new DataGridView();
+            search_input = new TextBox();
+            packageId = new TextBox();
+            serviceCom = new ComboBox();
+            totalunitNum = new NumericUpDown();
+            priceNum = new NumericUpDown();
+            btn_cancel = new Button();
+            btn_insert = new Button();
+            btn_save = new Button();
+            btn_update = new Button();
+            btn_delete = new Button();
+            ((System.ComponentModel.ISupportInitialize)dataViewPackage).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)totalunitNum).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)priceNum).BeginInit();
+            SuspendLayout();
             // 
-            // lbl_title
+            // label1
             // 
-            this.lbl_title.AutoSize = true;
-            this.lbl_title.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_title.Location = new System.Drawing.Point(300, 50);
-            this.lbl_title.Name = "lbl_title";
-            this.lbl_title.Size = new System.Drawing.Size(125, 25);
-            this.lbl_title.TabIndex = 0;
-            this.lbl_title.Text = "Manage Employee";
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(397, 78);
+            label1.Name = "label1";
+            label1.Size = new Size(126, 21);
+            label1.TabIndex = 11;
+            label1.Text = "Manage Package";
+            label1.Click += label1_Click;
             // 
-            // lbl_search
+            // label2
             // 
-            this.lbl_search.AutoSize = true;
-            this.lbl_search.Location = new System.Drawing.Point(560, 75);
-            this.lbl_search.Name = "lbl_search";
-            this.lbl_search.Size = new System.Drawing.Size(35, 13);
-            this.lbl_search.TabIndex = 1;
-            this.lbl_search.Text = "Search";
+            label2.AutoSize = true;
+            label2.Location = new Point(629, 96);
+            label2.Name = "label2";
+            label2.Size = new Size(42, 15);
+            label2.TabIndex = 12;
+            label2.Text = "Search";
             // 
-            // inp_search
+            // label3
             // 
-            this.inp_search.Location = new System.Drawing.Point(620, 75);
-            this.inp_search.Name = "inp_search";
-            this.inp_search.Size = new System.Drawing.Size(100, 20);
-            this.inp_search.TabIndex = 2;
+            label3.AutoSize = true;
+            label3.Location = new Point(198, 316);
+            label3.Name = "label3";
+            label3.Size = new Size(38, 15);
+            label3.TabIndex = 13;
+            label3.Text = "label3";
             // 
-            // dtViewEmployee
+            // label4
             // 
-            this.dtViewEmployee.AllowUserToOrderColumns = false;
-            this.dtViewEmployee.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill; // Set the AutoSizeColumnsMode property
-            this.dtViewEmployee.Location = new System.Drawing.Point(150, 100);
-            this.dtViewEmployee.Name = "dtViewEmployee";
-            this.dtViewEmployee.Size = new System.Drawing.Size(750, 150);
-            this.dtViewEmployee.TabIndex = 3;
-            this.dtViewEmployee.AutoGenerateColumns = false;
-            this.dtViewEmployee.RowHeadersVisible = false;
-            this.dtViewEmployee.ReadOnly = true;
-            this.dtViewEmployee.AllowUserToResizeColumns = false;
-            this.dtViewEmployee.AllowUserToResizeRows = false;
-            this.dtViewEmployee.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.dtViewEmployee.EditMode = DataGridViewEditMode.EditProgrammatically;
-            this.dtViewEmployee.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dtViewEmployee.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
-            this.dtViewEmployee.CellClick += dtViewEmployee_CellClick;
-
-            //
-            // lbl_id
-            //
-            this.lbl_id.AutoSize = true;
-            this.lbl_id.Location = new System.Drawing.Point(150, 250);
-            this.lbl_id.Name = "lbl_id";
-            this.lbl_id.Size = new System.Drawing.Size(35, 13);
-            this.lbl_id.TabIndex = 4;
-            this.lbl_id.Text = "Employee ID";
+            label4.AutoSize = true;
+            label4.Location = new Point(198, 350);
+            label4.Name = "label4";
+            label4.Size = new Size(38, 15);
+            label4.TabIndex = 14;
+            label4.Text = "label4";
             // 
-            // inp_id
+            // label5
             // 
-            this.inp_id.Location = new System.Drawing.Point(200, 250);
-            this.inp_id.Name = "inp_id";
-            this.inp_id.Size = new System.Drawing.Size(100, 20);
-            this.inp_id.TabIndex = 5;
-            //
-            // lbl_name
-            //
-            this.lbl_name.AutoSize = true;
-            this.lbl_name.Location = new System.Drawing.Point(150, 275);
-            this.lbl_name.Name = "lbl_name";
-            this.lbl_name.Size = new System.Drawing.Size(35, 13);
-            this.lbl_name.TabIndex = 6;
-            this.lbl_name.Text = "Name";
+            label5.AutoSize = true;
+            label5.Location = new Point(198, 383);
+            label5.Name = "label5";
+            label5.Size = new Size(38, 15);
+            label5.TabIndex = 15;
+            label5.Text = "label5";
             // 
-            // inp_name
+            // label6
             // 
-            this.inp_name.Location = new System.Drawing.Point(200, 275);
-            this.inp_name.Name = "inp_name";
-            this.inp_name.Size = new System.Drawing.Size(100, 20);
-            this.inp_name.TabIndex = 7;
-            //
-            // lbl_email
-            //
-            this.lbl_email.AutoSize = true;
-            this.lbl_email.Location = new System.Drawing.Point(150, 300);
-            this.lbl_email.Name = "lbl_email";
-            this.lbl_email.Size = new System.Drawing.Size(35, 13);
-            this.lbl_email.TabIndex = 6;
-            this.lbl_email.Text = "Email";
+            label6.AutoSize = true;
+            label6.Location = new Point(198, 417);
+            label6.Name = "label6";
+            label6.Size = new Size(38, 15);
+            label6.TabIndex = 16;
+            label6.Text = "label6";
             // 
-            // inp_email
+            // dataViewPackage
             // 
-            this.inp_email.Location = new System.Drawing.Point(200, 300);
-            this.inp_email.Name = "inp_email";
-            this.inp_email.Size = new System.Drawing.Size(100, 20);
-            this.inp_email.TabIndex = 6;
-            //
-            // lbl_phone
-            //
-            this.lbl_phone.AutoSize = true;
-            this.lbl_phone.Location = new System.Drawing.Point(150, 325);
-            this.lbl_phone.Name = "lbl_phone";
-            this.lbl_phone.Size = new System.Drawing.Size(35, 13);
-            this.lbl_phone.TabIndex = 6;
-            this.lbl_phone.Text = "Phone Number";
+            dataViewPackage.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataViewPackage.Location = new Point(182, 122);
+            dataViewPackage.Name = "dataViewPackage";
+            dataViewPackage.RowTemplate.Height = 25;
+            dataViewPackage.Size = new Size(606, 185);
+            dataViewPackage.TabIndex = 17;
+            dataViewPackage.CellContentClick += dataGridView1_CellContentClick;
             // 
-            // inp_phone
+            // search_input
             // 
-            this.inp_phone.Location = new System.Drawing.Point(200, 325);
-            this.inp_phone.Name = "inp_phone";
-            this.inp_phone.Size = new System.Drawing.Size(100, 20);
-            this.inp_phone.TabIndex = 7;
-            //
-            // lbl_address
-            //
-            this.lbl_address.AutoSize = true;
-            this.lbl_address.Location = new System.Drawing.Point(150, 350);
-            this.lbl_address.Name = "lbl_address";
-            this.lbl_address.Size = new System.Drawing.Size(35, 13);
-            this.lbl_address.TabIndex = 6;
-            this.lbl_address.Text = "Address";
+            search_input.Location = new Point(688, 93);
+            search_input.Name = "search_input";
+            search_input.Size = new Size(100, 23);
+            search_input.TabIndex = 18;
+            search_input.TextChanged += search_input_TextChanged;
             // 
-            // inp_address
+            // packageId
             // 
-            this.inp_address.Location = new System.Drawing.Point(200, 350);
-            this.inp_address.Name = "inp_address";
-            this.inp_address.Size = new System.Drawing.Size(100, 20);
-            this.inp_address.TabIndex = 8;
-            //
-            // lbl_date
-            //
-            this.lbl_date.AutoSize = true;
-            this.lbl_date.Location = new System.Drawing.Point(150, 375);
-            this.lbl_date.Name = "lbl_date";
-            this.lbl_date.Size = new System.Drawing.Size(35, 13);
-            this.lbl_date.TabIndex = 6;
-            this.lbl_date.Text = "Date of Birth";
+            packageId.Location = new Point(277, 313);
+            packageId.Name = "packageId";
+            packageId.Size = new Size(121, 23);
+            packageId.TabIndex = 19;
+            packageId.TextAlignChanged += packageId_TextAlignChanged;
             // 
-            // inp_date
+            // serviceCom
             // 
-            this.inp_date.Location = new System.Drawing.Point(200, 375);
-            this.inp_date.Name = "inp_date";
-            this.inp_date.Size = new System.Drawing.Size(200, 20);
-            this.inp_date.TabIndex = 10;
-            //
-            // lbl_combo
-            //
-            this.lbl_combo.AutoSize = true;
-            this.lbl_combo.Location = new System.Drawing.Point(400, 250);
-            this.lbl_combo.Name = "lbl_combo";
-            this.lbl_combo.Size = new System.Drawing.Size(35, 13);
-            this.lbl_combo.TabIndex = 6;
-            this.lbl_combo.Text = "Job Title";
-            //
-            // inp_combo
-            //
-            this.inp_combo.FormattingEnabled = true;
-            this.inp_combo.Location = new System.Drawing.Point(500, 250);
-            this.inp_combo.Name = "inp_combo";
-            this.inp_combo.Size = new System.Drawing.Size(121, 21);
-            this.inp_combo.TabIndex = 2;
+            serviceCom.FormattingEnabled = true;
+            serviceCom.Location = new Point(277, 347);
+            serviceCom.Name = "serviceCom";
+            serviceCom.Size = new Size(121, 23);
+            serviceCom.TabIndex = 20;
             // 
-            // lbl_numeric
-            //
-            this.lbl_numeric.AutoSize = true;
-            this.lbl_numeric.Location = new System.Drawing.Point(400, 275);
-            this.lbl_numeric.Name = "lbl_numeric";
-            this.lbl_numeric.Size = new System.Drawing.Size(35, 13);
-            this.lbl_numeric.TabIndex = 6;
-            this.lbl_numeric.Text = "Salary";
-            //
-            // inp_numeric
-            //
-            this.inp_numeric.Location = new System.Drawing.Point(500, 275);
-            this.inp_numeric.Name = "inp_numeric";
-            this.inp_numeric.Size = new System.Drawing.Size(120, 20);
-            this.inp_numeric.TabIndex = 0;
-            this.inp_numeric.Minimum = 0;
-            this.inp_numeric.Maximum = 10000000; 
-            //
-            // lbl_password
-            //
-            this.lbl_password.AutoSize = true;
-            this.lbl_password.Location = new System.Drawing.Point(400, 300);
-            this.lbl_password.Name = "lbl_password";
-            this.lbl_password.Size = new System.Drawing.Size(35, 13);
-            this.lbl_password.TabIndex = 6;
-            this.lbl_password.Text = "Password";
+            // totalunitNum
             // 
-            // inp_password
+            totalunitNum.DecimalPlaces = 1;
+            totalunitNum.Location = new Point(278, 381);
+            totalunitNum.Name = "totalunitNum";
+            totalunitNum.Size = new Size(120, 23);
+            totalunitNum.TabIndex = 21;
             // 
-            this.inp_password.Location = new System.Drawing.Point(500, 300);
-            this.inp_password.Name = "inp_password";
-            this.inp_password.Size = new System.Drawing.Size(100, 20);
-            this.inp_password.TabIndex = 8;
-            //
-            // lbl_conpassword
-            //
-            this.lbl_conpassword.AutoSize = true;
-            this.lbl_conpassword.Location = new System.Drawing.Point(400, 325);
-            this.lbl_conpassword.Name = "lbl_conpassword";
-            this.lbl_conpassword.Size = new System.Drawing.Size(35, 13);
-            this.lbl_conpassword.TabIndex = 6;
-            this.lbl_conpassword.Text = "Confirm Password";
+            // priceNum
             // 
-            // inp_conpassword
+            priceNum.Location = new Point(278, 415);
+            priceNum.Name = "priceNum";
+            priceNum.Size = new Size(120, 23);
+            priceNum.TabIndex = 22;
             // 
-            this.inp_conpassword.Location = new System.Drawing.Point(500, 325);
-            this.inp_conpassword.Name = "inp_conpassword";
-            this.inp_conpassword.Size = new System.Drawing.Size(100, 20);
-            this.inp_conpassword.TabIndex = 8;
-            //
-            // btn_insert
-            //
-            this.btn_insert.Location = new System.Drawing.Point(400, 350);
-            this.btn_insert.Name = "btn_insert";
-            this.btn_insert.Size = new System.Drawing.Size(75, 23);
-            this.btn_insert.TabIndex = 9;
-            this.btn_insert.Text = "Insert";
-            this.btn_insert.UseVisualStyleBackColor = true;
-            this.btn_insert.Click += new System.EventHandler(this.btn_insert_Click);
-            //
-            // btn_update
-            //
-            this.btn_update.Location = new System.Drawing.Point(475, 350);
-            this.btn_update.Name = "btn_update";
-            this.btn_update.Size = new System.Drawing.Size(75, 23);
-            this.btn_update.TabIndex = 9;
-            this.btn_update.Text = "Update";
-            this.btn_update.UseVisualStyleBackColor = true;
-            this.btn_update.Click += new System.EventHandler(this.btn_update_Click);
-            //
-            // btn_delete
-            //
-            this.btn_delete.Location = new System.Drawing.Point(550, 350);
-            this.btn_delete.Name = "btn_delete";
-            this.btn_delete.Size = new System.Drawing.Size(75, 23);
-            this.btn_delete.TabIndex = 9;
-            this.btn_delete.Text = "Delete";
-            this.btn_delete.UseVisualStyleBackColor = true;
-            this.btn_delete.Click += new System.EventHandler(this.btn_delete_Click);
-            //
-            // btn_save
-            //
-            this.btn_save.Location = new System.Drawing.Point(450, 375);
-            this.btn_save.Name = "btn_save";
-            this.btn_save.Size = new System.Drawing.Size(75, 23);
-            this.btn_save.TabIndex = 9;
-            this.btn_save.Text = "Save";
-            this.btn_save.UseVisualStyleBackColor = true;
-            this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
-            //
             // btn_cancel
-            //
-            this.btn_cancel.Location = new System.Drawing.Point(525, 375);
-            this.btn_cancel.Name = "btn_cancel";
-            this.btn_cancel.Size = new System.Drawing.Size(75, 23);
-            this.btn_cancel.TabIndex = 9;
-            this.btn_cancel.Text = "Cancel";
-            this.btn_cancel.UseVisualStyleBackColor = true;
-            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
-            // View_Transaction_Form
+            btn_cancel.Location = new Point(558, 393);
+            btn_cancel.Name = "btn_cancel";
+            btn_cancel.Size = new Size(75, 23);
+            btn_cancel.TabIndex = 23;
+            btn_cancel.Text = "Cancel";
+            btn_cancel.UseVisualStyleBackColor = true;
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.lbl_title);
-            this.Controls.Add(this.lbl_search);
-            this.Controls.Add(this.inp_search);
-            this.Controls.Add(this.dtViewEmployee);
-            this.Controls.Add(this.inp_id);
-            this.Controls.Add(this.lbl_id);
-            this.Controls.Add(this.inp_name);
-            this.Controls.Add(this.lbl_name);
-            this.Controls.Add(this.inp_email);
-            this.Controls.Add(this.lbl_email);
-            this.Controls.Add(this.inp_phone);
-            this.Controls.Add(this.lbl_phone);
-            this.Controls.Add(this.inp_address);
-            this.Controls.Add(this.lbl_address);
-            this.Controls.Add(this.inp_date);
-            this.Controls.Add(this.lbl_date);
-            this.Controls.Add(this.inp_combo);
-            this.Controls.Add(this.lbl_combo);
-            this.Controls.Add(this.inp_numeric);
-            this.Controls.Add(this.lbl_numeric);
-            this.Controls.Add(this.inp_password);
-            this.Controls.Add(this.lbl_password);
-            this.Controls.Add(this.inp_conpassword);
-            this.Controls.Add(this.lbl_conpassword);
-            this.Controls.Add(this.btn_insert);
-            this.Controls.Add(this.btn_update);
-            this.Controls.Add(this.btn_delete);
-            this.Controls.Add(this.btn_save);
-            this.Controls.Add(this.btn_cancel);
-            this.Name = "View_Transaction_Form";
-            this.Text = "Manage Employee";
-            this.Load += new System.EventHandler(this.Manage_Employee_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dtViewEmployee)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            // btn_insert
+            // 
+            btn_insert.Location = new Point(434, 364);
+            btn_insert.Name = "btn_insert";
+            btn_insert.Size = new Size(75, 23);
+            btn_insert.TabIndex = 24;
+            btn_insert.Text = "Insert";
+            btn_insert.UseVisualStyleBackColor = true;
+            btn_insert.Click += button9_Click;
+            // 
+            // btn_save
+            // 
+            btn_save.Location = new Point(477, 393);
+            btn_save.Name = "btn_save";
+            btn_save.Size = new Size(75, 23);
+            btn_save.TabIndex = 25;
+            btn_save.Text = "Save";
+            btn_save.UseVisualStyleBackColor = true;
+            // 
+            // btn_update
+            // 
+            btn_update.Location = new Point(515, 364);
+            btn_update.Name = "btn_update";
+            btn_update.Size = new Size(75, 23);
+            btn_update.TabIndex = 26;
+            btn_update.Text = "Update";
+            btn_update.UseVisualStyleBackColor = true;
+            // 
+            // btn_delete
+            // 
+            btn_delete.Location = new Point(596, 364);
+            btn_delete.Name = "btn_delete";
+            btn_delete.Size = new Size(75, 23);
+            btn_delete.TabIndex = 27;
+            btn_delete.Text = "Delete";
+            btn_delete.UseVisualStyleBackColor = true;
+            // 
+            // Package_Form
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(btn_delete);
+            Controls.Add(btn_update);
+            Controls.Add(btn_save);
+            Controls.Add(btn_insert);
+            Controls.Add(btn_cancel);
+            Controls.Add(priceNum);
+            Controls.Add(totalunitNum);
+            Controls.Add(serviceCom);
+            Controls.Add(packageId);
+            Controls.Add(search_input);
+            Controls.Add(dataViewPackage);
+            Controls.Add(label6);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Name = "Package_Form";
+            Text = "Package_Form";
+            Load += Package_Form_Load;
+            Controls.SetChildIndex(label1, 0);
+            Controls.SetChildIndex(label2, 0);
+            Controls.SetChildIndex(label3, 0);
+            Controls.SetChildIndex(label4, 0);
+            Controls.SetChildIndex(label5, 0);
+            Controls.SetChildIndex(label6, 0);
+            Controls.SetChildIndex(dataViewPackage, 0);
+            Controls.SetChildIndex(search_input, 0);
+            Controls.SetChildIndex(packageId, 0);
+            Controls.SetChildIndex(serviceCom, 0);
+            Controls.SetChildIndex(totalunitNum, 0);
+            Controls.SetChildIndex(priceNum, 0);
+            Controls.SetChildIndex(btn_cancel, 0);
+            Controls.SetChildIndex(btn_insert, 0);
+            Controls.SetChildIndex(btn_save, 0);
+            Controls.SetChildIndex(btn_update, 0);
+            Controls.SetChildIndex(btn_delete, 0);
+            ((System.ComponentModel.ISupportInitialize)dataViewPackage).EndInit();
+            ((System.ComponentModel.ISupportInitialize)totalunitNum).EndInit();
+            ((System.ComponentModel.ISupportInitialize)priceNum).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private System.Windows.Forms.Label lbl_title;
-        private System.Windows.Forms.Label lbl_search;
-        private System.Windows.Forms.TextBox inp_search;
-        private System.Windows.Forms.DataGridView dtViewEmployee;
-        private System.Windows.Forms.TextBox inp_id;
-        private System.Windows.Forms.Label lbl_id;
-        private System.Windows.Forms.TextBox inp_name;
-        private System.Windows.Forms.Label lbl_name;
-        private System.Windows.Forms.TextBox inp_email;
-        private System.Windows.Forms.Label lbl_email;
-        private System.Windows.Forms.TextBox inp_phone;
-        private System.Windows.Forms.Label lbl_phone;
-        private System.Windows.Forms.TextBox inp_address;
-        private System.Windows.Forms.Label lbl_address;
-        private System.Windows.Forms.DateTimePicker inp_date;
-        private System.Windows.Forms.Label lbl_date;
-        private System.Windows.Forms.ComboBox inp_combo;
-        private System.Windows.Forms.Label lbl_combo;
-        private System.Windows.Forms.NumericUpDown inp_numeric;
-        private System.Windows.Forms.Label lbl_numeric;
-        private System.Windows.Forms.TextBox inp_password;
-        private System.Windows.Forms.Label lbl_password;
-        private System.Windows.Forms.TextBox inp_conpassword;
-        private System.Windows.Forms.Label lbl_conpassword;
-        private System.Windows.Forms.Button btn_insert;
-        private System.Windows.Forms.Button btn_update;
-        private System.Windows.Forms.Button btn_delete;
-        private System.Windows.Forms.Button btn_save;
-        private System.Windows.Forms.Button btn_cancel;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private Label label5;
+        private Label label6;
+        private DataGridView dataViewPackage;
+        private TextBox search_input;
+        private TextBox packageId;
+        private ComboBox serviceCom;
+        private NumericUpDown totalunitNum;
+        private NumericUpDown priceNum;
+        private Button btn_cancel;
+        private Button btn_insert;
+        private Button btn_save;
+        private Button btn_update;
+        private Button btn_delete;
     }
 }

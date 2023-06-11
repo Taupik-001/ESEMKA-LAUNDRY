@@ -28,370 +28,317 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbl_title = new System.Windows.Forms.Label();
-            this.lbl_search = new System.Windows.Forms.Label();
-            this.inp_search = new System.Windows.Forms.TextBox();
-            this.dtViewEmployee = new System.Windows.Forms.DataGridView();
-            this.lbl_id = new System.Windows.Forms.Label();
-            this.inp_id = new System.Windows.Forms.TextBox();
-            this.lbl_name = new System.Windows.Forms.Label();
-            this.inp_name = new System.Windows.Forms.TextBox();
-            this.lbl_email = new System.Windows.Forms.Label();
-            this.inp_email = new System.Windows.Forms.TextBox();
-            this.lbl_phone = new System.Windows.Forms.Label();
-            this.inp_phone = new System.Windows.Forms.TextBox();
-            this.lbl_address = new System.Windows.Forms.Label();
-            this.inp_address = new System.Windows.Forms.TextBox();
-            this.lbl_date = new System.Windows.Forms.Label();
-            this.inp_date = new System.Windows.Forms.DateTimePicker();
-            this.lbl_combo = new System.Windows.Forms.Label();
-            this.inp_combo = new System.Windows.Forms.ComboBox();
-            this.lbl_numeric = new System.Windows.Forms.Label();
-            this.inp_numeric = new System.Windows.Forms.NumericUpDown();
-            this.lbl_password = new System.Windows.Forms.Label();
-            this.inp_password = new System.Windows.Forms.TextBox();
-            this.lbl_conpassword = new System.Windows.Forms.Label();
-            this.inp_conpassword = new System.Windows.Forms.TextBox();
-            this.btn_insert = new System.Windows.Forms.Button();
-            this.btn_update = new System.Windows.Forms.Button();
-            this.btn_delete = new System.Windows.Forms.Button();
-            this.btn_save = new System.Windows.Forms.Button();
-            this.btn_cancel = new System.Windows.Forms.Button();
-            this.inp_date = new System.Windows.Forms.DateTimePicker();
-            ((System.ComponentModel.ISupportInitialize)(this.dtViewEmployee)).BeginInit();
-            this.SuspendLayout();
+            lbl_title = new Label();
+            dtViewService = new DataGridView();
+            lbl_name = new Label();
+            lbl_email = new Label();
+            lbl_address = new Label();
+            lbl_date = new Label();
+            inp_service = new ComboBox();
+            inp_unit = new NumericUpDown();
+            add_customer = new LinkLabel();
+            panel1 = new Panel();
+            address_display = new Label();
+            name_display = new Label();
+            label5 = new Label();
+            label4 = new Label();
+            inp_phone_number = new TextBox();
+            label3 = new Label();
+            label2 = new Label();
+            checkBox1 = new CheckBox();
+            btn_add = new Button();
+            lbl_total = new Label();
+            lbl_estimation = new Label();
+            ((System.ComponentModel.ISupportInitialize)dtViewService).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)inp_unit).BeginInit();
+            panel1.SuspendLayout();
+            SuspendLayout();
             // 
             // lbl_title
             // 
-            this.lbl_title.AutoSize = true;
-            this.lbl_title.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_title.Location = new System.Drawing.Point(300, 50);
-            this.lbl_title.Name = "lbl_title";
-            this.lbl_title.Size = new System.Drawing.Size(125, 25);
-            this.lbl_title.TabIndex = 0;
-            this.lbl_title.Text = "Manage Employee";
+            lbl_title.AutoSize = true;
+            lbl_title.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            lbl_title.Location = new Point(420, 61);
+            lbl_title.Margin = new Padding(4, 0, 4, 0);
+            lbl_title.Name = "lbl_title";
+            lbl_title.Size = new Size(151, 20);
+            lbl_title.TabIndex = 0;
+            lbl_title.Text = "Transaction Deposit";
             // 
-            // lbl_search
+            // dtViewService
             // 
-            this.lbl_search.AutoSize = true;
-            this.lbl_search.Location = new System.Drawing.Point(560, 75);
-            this.lbl_search.Name = "lbl_search";
-            this.lbl_search.Size = new System.Drawing.Size(35, 13);
-            this.lbl_search.TabIndex = 1;
-            this.lbl_search.Text = "Search";
+            dtViewService.AllowUserToResizeColumns = false;
+            dtViewService.AllowUserToResizeRows = false;
+            dtViewService.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtViewService.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dtViewService.EditMode = DataGridViewEditMode.EditProgrammatically;
+            dtViewService.Location = new Point(479, 167);
+            dtViewService.Margin = new Padding(4, 3, 4, 3);
+            dtViewService.Name = "dtViewService";
+            dtViewService.ReadOnly = true;
+            dtViewService.RowHeadersVisible = false;
+            dtViewService.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dtViewService.Size = new Size(384, 223);
+            dtViewService.TabIndex = 3;
             // 
-            // inp_search
-            // 
-            this.inp_search.Location = new System.Drawing.Point(620, 75);
-            this.inp_search.Name = "inp_search";
-            this.inp_search.Size = new System.Drawing.Size(100, 20);
-            this.inp_search.TabIndex = 2;
-            // 
-            // dtViewEmployee
-            // 
-            this.dtViewEmployee.AllowUserToOrderColumns = false;
-            this.dtViewEmployee.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill; // Set the AutoSizeColumnsMode property
-            this.dtViewEmployee.Location = new System.Drawing.Point(150, 100);
-            this.dtViewEmployee.Name = "dtViewEmployee";
-            this.dtViewEmployee.Size = new System.Drawing.Size(750, 150);
-            this.dtViewEmployee.TabIndex = 3;
-            this.dtViewEmployee.AutoGenerateColumns = false;
-            this.dtViewEmployee.RowHeadersVisible = false;
-            this.dtViewEmployee.ReadOnly = true;
-            this.dtViewEmployee.AllowUserToResizeColumns = false;
-            this.dtViewEmployee.AllowUserToResizeRows = false;
-            this.dtViewEmployee.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.dtViewEmployee.EditMode = DataGridViewEditMode.EditProgrammatically;
-            this.dtViewEmployee.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dtViewEmployee.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
-            this.dtViewEmployee.CellClick += dtViewEmployee_CellClick;
-
-            //
-            // lbl_id
-            //
-            this.lbl_id.AutoSize = true;
-            this.lbl_id.Location = new System.Drawing.Point(150, 250);
-            this.lbl_id.Name = "lbl_id";
-            this.lbl_id.Size = new System.Drawing.Size(35, 13);
-            this.lbl_id.TabIndex = 4;
-            this.lbl_id.Text = "Employee ID";
-            // 
-            // inp_id
-            // 
-            this.inp_id.Location = new System.Drawing.Point(200, 250);
-            this.inp_id.Name = "inp_id";
-            this.inp_id.Size = new System.Drawing.Size(100, 20);
-            this.inp_id.TabIndex = 5;
-            //
             // lbl_name
-            //
-            this.lbl_name.AutoSize = true;
-            this.lbl_name.Location = new System.Drawing.Point(150, 275);
-            this.lbl_name.Name = "lbl_name";
-            this.lbl_name.Size = new System.Drawing.Size(35, 13);
-            this.lbl_name.TabIndex = 6;
-            this.lbl_name.Text = "Name";
             // 
-            // inp_name
+            lbl_name.AutoSize = true;
+            lbl_name.Location = new Point(215, 210);
+            lbl_name.Margin = new Padding(4, 0, 4, 0);
+            lbl_name.Name = "lbl_name";
+            lbl_name.Size = new Size(44, 15);
+            lbl_name.TabIndex = 6;
+            lbl_name.Text = "Service";
             // 
-            this.inp_name.Location = new System.Drawing.Point(200, 275);
-            this.inp_name.Name = "inp_name";
-            this.inp_name.Size = new System.Drawing.Size(100, 20);
-            this.inp_name.TabIndex = 7;
-            //
             // lbl_email
-            //
-            this.lbl_email.AutoSize = true;
-            this.lbl_email.Location = new System.Drawing.Point(150, 300);
-            this.lbl_email.Name = "lbl_email";
-            this.lbl_email.Size = new System.Drawing.Size(35, 13);
-            this.lbl_email.TabIndex = 6;
-            this.lbl_email.Text = "Email";
             // 
-            // inp_email
+            lbl_email.AutoSize = true;
+            lbl_email.Location = new Point(215, 250);
+            lbl_email.Margin = new Padding(4, 0, 4, 0);
+            lbl_email.Name = "lbl_email";
+            lbl_email.Size = new Size(78, 15);
+            lbl_email.TabIndex = 6;
+            lbl_email.Text = "Price Per Unit";
             // 
-            this.inp_email.Location = new System.Drawing.Point(200, 300);
-            this.inp_email.Name = "inp_email";
-            this.inp_email.Size = new System.Drawing.Size(100, 20);
-            this.inp_email.TabIndex = 6;
-            //
-            // lbl_phone
-            //
-            this.lbl_phone.AutoSize = true;
-            this.lbl_phone.Location = new System.Drawing.Point(150, 325);
-            this.lbl_phone.Name = "lbl_phone";
-            this.lbl_phone.Size = new System.Drawing.Size(35, 13);
-            this.lbl_phone.TabIndex = 6;
-            this.lbl_phone.Text = "Phone Number";
-            // 
-            // inp_phone
-            // 
-            this.inp_phone.Location = new System.Drawing.Point(200, 325);
-            this.inp_phone.Name = "inp_phone";
-            this.inp_phone.Size = new System.Drawing.Size(100, 20);
-            this.inp_phone.TabIndex = 7;
-            //
             // lbl_address
-            //
-            this.lbl_address.AutoSize = true;
-            this.lbl_address.Location = new System.Drawing.Point(150, 350);
-            this.lbl_address.Name = "lbl_address";
-            this.lbl_address.Size = new System.Drawing.Size(35, 13);
-            this.lbl_address.TabIndex = 6;
-            this.lbl_address.Text = "Address";
             // 
-            // inp_address
+            lbl_address.AutoSize = true;
+            lbl_address.Location = new Point(536, 413);
+            lbl_address.Margin = new Padding(4, 0, 4, 0);
+            lbl_address.Name = "lbl_address";
+            lbl_address.Size = new Size(67, 15);
+            lbl_address.TabIndex = 6;
+            lbl_address.Text = "Total Price :";
             // 
-            this.inp_address.Location = new System.Drawing.Point(200, 350);
-            this.inp_address.Name = "inp_address";
-            this.inp_address.Size = new System.Drawing.Size(100, 20);
-            this.inp_address.TabIndex = 8;
-            //
             // lbl_date
-            //
-            this.lbl_date.AutoSize = true;
-            this.lbl_date.Location = new System.Drawing.Point(150, 375);
-            this.lbl_date.Name = "lbl_date";
-            this.lbl_date.Size = new System.Drawing.Size(35, 13);
-            this.lbl_date.TabIndex = 6;
-            this.lbl_date.Text = "Date of Birth";
             // 
-            // inp_date
+            lbl_date.AutoSize = true;
+            lbl_date.Location = new Point(505, 446);
+            lbl_date.Margin = new Padding(4, 0, 4, 0);
+            lbl_date.Name = "lbl_date";
+            lbl_date.Size = new Size(98, 15);
+            lbl_date.TabIndex = 6;
+            lbl_date.Text = "Estimation Time :";
             // 
-            this.inp_date.Location = new System.Drawing.Point(200, 375);
-            this.inp_date.Name = "inp_date";
-            this.inp_date.Size = new System.Drawing.Size(200, 20);
-            this.inp_date.TabIndex = 10;
-            //
-            // lbl_combo
-            //
-            this.lbl_combo.AutoSize = true;
-            this.lbl_combo.Location = new System.Drawing.Point(400, 250);
-            this.lbl_combo.Name = "lbl_combo";
-            this.lbl_combo.Size = new System.Drawing.Size(35, 13);
-            this.lbl_combo.TabIndex = 6;
-            this.lbl_combo.Text = "Job Title";
-            //
-            // inp_combo
-            //
-            this.inp_combo.FormattingEnabled = true;
-            this.inp_combo.Location = new System.Drawing.Point(500, 250);
-            this.inp_combo.Name = "inp_combo";
-            this.inp_combo.Size = new System.Drawing.Size(121, 21);
-            this.inp_combo.TabIndex = 2;
+            // inp_service
             // 
-            // lbl_numeric
-            //
-            this.lbl_numeric.AutoSize = true;
-            this.lbl_numeric.Location = new System.Drawing.Point(400, 275);
-            this.lbl_numeric.Name = "lbl_numeric";
-            this.lbl_numeric.Size = new System.Drawing.Size(35, 13);
-            this.lbl_numeric.TabIndex = 6;
-            this.lbl_numeric.Text = "Salary";
-            //
-            // inp_numeric
-            //
-            this.inp_numeric.Location = new System.Drawing.Point(500, 275);
-            this.inp_numeric.Name = "inp_numeric";
-            this.inp_numeric.Size = new System.Drawing.Size(120, 20);
-            this.inp_numeric.TabIndex = 0;
-            this.inp_numeric.Minimum = 0;
-            this.inp_numeric.Maximum = 10000000; 
-            //
-            // lbl_password
-            //
-            this.lbl_password.AutoSize = true;
-            this.lbl_password.Location = new System.Drawing.Point(400, 300);
-            this.lbl_password.Name = "lbl_password";
-            this.lbl_password.Size = new System.Drawing.Size(35, 13);
-            this.lbl_password.TabIndex = 6;
-            this.lbl_password.Text = "Password";
+            inp_service.FormattingEnabled = true;
+            inp_service.Location = new Point(326, 207);
+            inp_service.Margin = new Padding(4, 3, 4, 3);
+            inp_service.Name = "inp_service";
+            inp_service.Size = new Size(140, 23);
+            inp_service.TabIndex = 2;
             // 
-            // inp_password
+            // inp_unit
             // 
-            this.inp_password.Location = new System.Drawing.Point(500, 300);
-            this.inp_password.Name = "inp_password";
-            this.inp_password.Size = new System.Drawing.Size(100, 20);
-            this.inp_password.TabIndex = 8;
-            //
-            // lbl_conpassword
-            //
-            this.lbl_conpassword.AutoSize = true;
-            this.lbl_conpassword.Location = new System.Drawing.Point(400, 325);
-            this.lbl_conpassword.Name = "lbl_conpassword";
-            this.lbl_conpassword.Size = new System.Drawing.Size(35, 13);
-            this.lbl_conpassword.TabIndex = 6;
-            this.lbl_conpassword.Text = "Confirm Password";
+            inp_unit.DecimalPlaces = 1;
+            inp_unit.Location = new Point(326, 250);
+            inp_unit.Margin = new Padding(4, 3, 4, 3);
+            inp_unit.Maximum = new decimal(new int[] { 10000000, 0, 0, 0 });
+            inp_unit.Name = "inp_unit";
+            inp_unit.Size = new Size(140, 23);
+            inp_unit.TabIndex = 0;
             // 
-            // inp_conpassword
+            // add_customer
             // 
-            this.inp_conpassword.Location = new System.Drawing.Point(500, 325);
-            this.inp_conpassword.Name = "inp_conpassword";
-            this.inp_conpassword.Size = new System.Drawing.Size(100, 20);
-            this.inp_conpassword.TabIndex = 8;
-            //
-            // btn_insert
-            //
-            this.btn_insert.Location = new System.Drawing.Point(400, 350);
-            this.btn_insert.Name = "btn_insert";
-            this.btn_insert.Size = new System.Drawing.Size(75, 23);
-            this.btn_insert.TabIndex = 9;
-            this.btn_insert.Text = "Insert";
-            this.btn_insert.UseVisualStyleBackColor = true;
-            this.btn_insert.Click += new System.EventHandler(this.btn_insert_Click);
-            //
-            // btn_update
-            //
-            this.btn_update.Location = new System.Drawing.Point(475, 350);
-            this.btn_update.Name = "btn_update";
-            this.btn_update.Size = new System.Drawing.Size(75, 23);
-            this.btn_update.TabIndex = 9;
-            this.btn_update.Text = "Update";
-            this.btn_update.UseVisualStyleBackColor = true;
-            this.btn_update.Click += new System.EventHandler(this.btn_update_Click);
-            //
-            // btn_delete
-            //
-            this.btn_delete.Location = new System.Drawing.Point(550, 350);
-            this.btn_delete.Name = "btn_delete";
-            this.btn_delete.Size = new System.Drawing.Size(75, 23);
-            this.btn_delete.TabIndex = 9;
-            this.btn_delete.Text = "Delete";
-            this.btn_delete.UseVisualStyleBackColor = true;
-            this.btn_delete.Click += new System.EventHandler(this.btn_delete_Click);
-            //
-            // btn_save
-            //
-            this.btn_save.Location = new System.Drawing.Point(450, 375);
-            this.btn_save.Name = "btn_save";
-            this.btn_save.Size = new System.Drawing.Size(75, 23);
-            this.btn_save.TabIndex = 9;
-            this.btn_save.Text = "Save";
-            this.btn_save.UseVisualStyleBackColor = true;
-            this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
-            //
-            // btn_cancel
-            //
-            this.btn_cancel.Location = new System.Drawing.Point(525, 375);
-            this.btn_cancel.Name = "btn_cancel";
-            this.btn_cancel.Size = new System.Drawing.Size(75, 23);
-            this.btn_cancel.TabIndex = 9;
-            this.btn_cancel.Text = "Cancel";
-            this.btn_cancel.UseVisualStyleBackColor = true;
-            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
+            add_customer.AutoSize = true;
+            add_customer.Font = new Font("Arial", 10F, FontStyle.Underline, GraphicsUnit.Point);
+            add_customer.ForeColor = Color.Blue;
+            add_customer.Location = new Point(108, 42);
+            add_customer.Margin = new Padding(4, 0, 4, 0);
+            add_customer.Name = "add_customer";
+            add_customer.Size = new Size(151, 16);
+            add_customer.TabIndex = 11;
+            add_customer.TabStop = true;
+            add_customer.Text = "Not Found? Add New +";
+            add_customer.LinkClicked += LinkLabel_LinkClicked;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(address_display);
+            panel1.Controls.Add(name_display);
+            panel1.Controls.Add(label5);
+            panel1.Controls.Add(label4);
+            panel1.Controls.Add(inp_phone_number);
+            panel1.Controls.Add(label3);
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(add_customer);
+            panel1.Location = new Point(182, 95);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(682, 65);
+            panel1.TabIndex = 12;
+            // 
+            // address_display
+            // 
+            address_display.AutoSize = true;
+            address_display.Location = new Point(372, 42);
+            address_display.Name = "address_display";
+            address_display.Size = new Size(57, 15);
+            address_display.TabIndex = 15;
+            address_display.Text = "[Address]";
+            // 
+            // name_display
+            // 
+            name_display.AutoSize = true;
+            name_display.Location = new Point(372, 11);
+            name_display.Name = "name_display";
+            name_display.Size = new Size(47, 15);
+            name_display.TabIndex = 14;
+            name_display.Text = "[Name]";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(297, 42);
+            label5.Name = "label5";
+            label5.Size = new Size(49, 15);
+            label5.TabIndex = 13;
+            label5.Text = "Address";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(297, 11);
+            label4.Name = "label4";
+            label4.Size = new Size(39, 15);
+            label4.TabIndex = 12;
+            label4.Text = "Name";
+            // 
+            // inp_phone_number
+            // 
+            inp_phone_number.Location = new Point(108, 15);
+            inp_phone_number.Name = "inp_phone_number";
+            inp_phone_number.Size = new Size(100, 23);
+            inp_phone_number.TabIndex = 2;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(14, 23);
+            label3.Name = "label3";
+            label3.Size = new Size(88, 15);
+            label3.TabIndex = 1;
+            label3.Text = "Phone Number";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(3, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(59, 15);
+            label2.TabIndex = 0;
+            label2.Text = "Customer";
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(326, 302);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(135, 19);
+            checkBox1.TabIndex = 13;
+            checkBox1.Text = "Use prepaid Package";
+            checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // btn_add
+            // 
+            btn_add.Location = new Point(326, 346);
+            btn_add.Name = "btn_add";
+            btn_add.Size = new Size(75, 23);
+            btn_add.TabIndex = 14;
+            btn_add.Text = "Add";
+            btn_add.UseVisualStyleBackColor = true;
+            // 
+            // lbl_total
+            // 
+            lbl_total.AutoSize = true;
+            lbl_total.Location = new Point(658, 413);
+            lbl_total.Name = "lbl_total";
+            lbl_total.Size = new Size(78, 15);
+            lbl_total.TabIndex = 15;
+            lbl_total.Text = "<total_price>";
+            // 
+            // lbl_estimation
+            // 
+            lbl_estimation.AutoSize = true;
+            lbl_estimation.Location = new Point(658, 446);
+            lbl_estimation.Name = "lbl_estimation";
+            lbl_estimation.Size = new Size(108, 15);
+            lbl_estimation.TabIndex = 16;
+            lbl_estimation.Text = "<estimation_time>";
             // 
             // Transaction_Deposit_Form
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.lbl_title);
-            this.Controls.Add(this.lbl_search);
-            this.Controls.Add(this.inp_search);
-            this.Controls.Add(this.dtViewEmployee);
-            this.Controls.Add(this.inp_id);
-            this.Controls.Add(this.lbl_id);
-            this.Controls.Add(this.inp_name);
-            this.Controls.Add(this.lbl_name);
-            this.Controls.Add(this.inp_email);
-            this.Controls.Add(this.lbl_email);
-            this.Controls.Add(this.inp_phone);
-            this.Controls.Add(this.lbl_phone);
-            this.Controls.Add(this.inp_address);
-            this.Controls.Add(this.lbl_address);
-            this.Controls.Add(this.inp_date);
-            this.Controls.Add(this.lbl_date);
-            this.Controls.Add(this.inp_combo);
-            this.Controls.Add(this.lbl_combo);
-            this.Controls.Add(this.inp_numeric);
-            this.Controls.Add(this.lbl_numeric);
-            this.Controls.Add(this.inp_password);
-            this.Controls.Add(this.lbl_password);
-            this.Controls.Add(this.inp_conpassword);
-            this.Controls.Add(this.lbl_conpassword);
-            this.Controls.Add(this.btn_insert);
-            this.Controls.Add(this.btn_update);
-            this.Controls.Add(this.btn_delete);
-            this.Controls.Add(this.btn_save);
-            this.Controls.Add(this.btn_cancel);
-            this.Name = "Transaction_Deposit_Form";
-            this.Text = "Manage Employee";
-            this.Load += new System.EventHandler(this.Manage_Employee_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dtViewEmployee)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(876, 519);
+            Controls.Add(lbl_estimation);
+            Controls.Add(lbl_total);
+            Controls.Add(btn_add);
+            Controls.Add(checkBox1);
+            Controls.Add(panel1);
+            Controls.Add(lbl_title);
+            Controls.Add(dtViewService);
+            Controls.Add(lbl_name);
+            Controls.Add(lbl_email);
+            Controls.Add(lbl_address);
+            Controls.Add(lbl_date);
+            Controls.Add(inp_service);
+            Controls.Add(inp_unit);
+            Margin = new Padding(5, 3, 5, 3);
+            Name = "Transaction_Deposit_Form";
+            Text = "Manage Employee";
+            Load += Transaction_Deposit_Form_Load;
+            Controls.SetChildIndex(inp_unit, 0);
+            Controls.SetChildIndex(inp_service, 0);
+            Controls.SetChildIndex(lbl_date, 0);
+            Controls.SetChildIndex(lbl_address, 0);
+            Controls.SetChildIndex(lbl_email, 0);
+            Controls.SetChildIndex(lbl_name, 0);
+            Controls.SetChildIndex(dtViewService, 0);
+            Controls.SetChildIndex(lbl_title, 0);
+            Controls.SetChildIndex(panel1, 0);
+            Controls.SetChildIndex(checkBox1, 0);
+            Controls.SetChildIndex(btn_add, 0);
+            Controls.SetChildIndex(lbl_total, 0);
+            Controls.SetChildIndex(lbl_estimation, 0);
+            ((System.ComponentModel.ISupportInitialize)dtViewService).EndInit();
+            ((System.ComponentModel.ISupportInitialize)inp_unit).EndInit();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private System.Windows.Forms.Label lbl_title;
-        private System.Windows.Forms.Label lbl_search;
-        private System.Windows.Forms.TextBox inp_search;
-        private System.Windows.Forms.DataGridView dtViewEmployee;
-        private System.Windows.Forms.TextBox inp_id;
-        private System.Windows.Forms.Label lbl_id;
-        private System.Windows.Forms.TextBox inp_name;
-        private System.Windows.Forms.Label lbl_name;
-        private System.Windows.Forms.TextBox inp_email;
-        private System.Windows.Forms.Label lbl_email;
-        private System.Windows.Forms.TextBox inp_phone;
-        private System.Windows.Forms.Label lbl_phone;
-        private System.Windows.Forms.TextBox inp_address;
-        private System.Windows.Forms.Label lbl_address;
-        private System.Windows.Forms.DateTimePicker inp_date;
-        private System.Windows.Forms.Label lbl_date;
-        private System.Windows.Forms.ComboBox inp_combo;
-        private System.Windows.Forms.Label lbl_combo;
-        private System.Windows.Forms.NumericUpDown inp_numeric;
-        private System.Windows.Forms.Label lbl_numeric;
-        private System.Windows.Forms.TextBox inp_password;
-        private System.Windows.Forms.Label lbl_password;
-        private System.Windows.Forms.TextBox inp_conpassword;
-        private System.Windows.Forms.Label lbl_conpassword;
-        private System.Windows.Forms.Button btn_insert;
-        private System.Windows.Forms.Button btn_update;
-        private System.Windows.Forms.Button btn_delete;
-        private System.Windows.Forms.Button btn_save;
-        private System.Windows.Forms.Button btn_cancel;
+        private Label lbl_title;
+        private DataGridView dtViewService;
+        private TextBox inp_name;
+        private Label lbl_name;
+        private TextBox inp_email;
+        private Label lbl_email;
+        private TextBox inp_phone;
+        private Label lbl_phone;
+        private TextBox inp_address;
+        private Label lbl_address;
+        private DateTimePicker inp_date;
+        private Label lbl_date;
+        private ComboBox inp_service;
+        private NumericUpDown inp_unit;
+        private LinkLabel add_customer;
+        private Button btn_insert;
+        private Panel panel1;
+        private TextBox inp_phone_number;
+        private Label label3;
+        private Label label2;
+        private Label address_display;
+        private Label name_display;
+        private Label label5;
+        private Label label4;
+        private CheckBox checkBox1;
+        private Button btn_add;
+        private Label lbl_total;
+        private Label lbl_estimation;
     }
 }

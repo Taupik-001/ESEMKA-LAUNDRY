@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Test.Service_Program;
 using System.Data;
+using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using System.Web;
 
 namespace Test.Form_Application
 {
@@ -26,14 +30,10 @@ namespace Test.Form_Application
         {
             inp_id.Enabled = field;
             inp_name.Enabled = field;
-            inp_email.Enabled = field;
-            inp_phone.Enabled = field;
-            inp_address.Enabled = field;
-            inp_date.Enabled = field;
-            inp_combo.Enabled = field;
-            inp_numeric.Enabled = field;
-            inp_password.Enabled = field;
-            inp_conpassword.Enabled = field;
+            inp_category.Enabled = field;
+            inp_unit.Enabled = field;
+            inp_price.Enabled = field;
+            inp_est.Enabled = field;
         }
         // Enabled or Disabled Button
         void EnabledField(bool button1, bool button2)
@@ -45,6 +45,44 @@ namespace Test.Form_Application
             btn_cancel.Enabled = button2;
             btn_save.Enabled = button2;
         }
+        private bool ValidateInput()
+        {
+            // Check if all fields are filled
+            foreach (TextBox textBox in textBoxes)
+            {
+                if (string.IsNullOrEmpty(textBox.Text))
+                {
+                    MessageBox.Show("Please fill in all fields.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+            }
+
+
+            if (inp_unit.SelectedIndex == 0)
+            {
+                MessageBox.Show("Please select a value from the combo box.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (inp_price.Value == 0)
+            {
+                MessageBox.Show("Please input a value for the Salary.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            if (inp_category.SelectedIndex == 0)
+            {
+                MessageBox.Show("Please select a value from the combo box.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (inp_est.Value == 0)
+            {
+                MessageBox.Show("Please input a value for the Salary.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
+        }
+
         // List textbox field input
         private List<TextBox> textBoxes = new List<TextBox>();
         // To clear the field
@@ -52,145 +90,150 @@ namespace Test.Form_Application
         {
             textBoxes.Add(inp_id);
             textBoxes.Add(inp_name);
-            textBoxes.Add(inp_email);
-            textBoxes.Add(inp_phone);
-            textBoxes.Add(inp_address);
-            textBoxes.Add(inp_password);
-            textBoxes.Add(inp_conpassword);
 
-            inp_date.Value = DateTime.Now;
-            inp_combo.SelectedIndex = 0;
-            inp_numeric.Value = inp_numeric.Minimum;
+            inp_category.SelectedIndex = 0;
+            inp_unit.SelectedIndex = 0;
+            inp_price.Value = inp_price.Minimum;
+            inp_est.Value = inp_est.Minimum;
             foreach (TextBox textBox in textBoxes)
             {
                 textBox.Clear();
             }
         }
-        private void Manage_Employee_Load(object sender, EventArgs e)
+        // Update the DataGridView
+        DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
+        //DataTable? daata = Data_Access_Layer.JoinData("Service", "Category", "Unit");
+        //DataTable? daata = Data_Access_Layer.JoinData("Service", "Category", "Unit");
+        private void Manage_Service_Load(object sender, EventArgs e)
         {
             EnabledField(false);
             EnabledField(true, false);
-            // Connection string
-            SqlConnection con = ConnDatabase.Conn();
-            con.Open();
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT Employee.Id, Employee.Password, Employee.Name, Employee.Email, Employee.PhoneNumber, Employee.Address, Employee.DateofBirth, Job.Name AS JobTitle, Employee.Salary FROM Employee JOIN Job ON Employee.IdJob = Job.Id", con);
-            // Datatable
-            DataTable dt = new DataTable();
-            sda.Fill(dt);
 
-            dtViewEmployee.DataSource = dt;
+            dtViewService.AutoGenerateColumns = false;
+            dtViewService.DataSource = dt;
+            dtViewService.AllowUserToOrderColumns = false;
+            dtViewService.RowHeadersVisible = false;
+            dtViewService.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill; // Set the AutoSizeColumnsMode property
+            dtViewService.ReadOnly = true;
+            dtViewService.AllowUserToResizeColumns = false;
+            dtViewService.AllowUserToResizeRows = false;
+            dtViewService.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dtViewService.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            // Define columns
+            dtViewService.Columns.Add("Id", "Service Id");
+            dtViewService.Columns.Add("Name", "Service Name");
+            dtViewService.Columns.Add("Category", "Category");
+            dtViewService.Columns.Add("Unit", "Unit");
+            dtViewService.Columns.Add("PriceUnit", "Price");
+            dtViewService.Columns.Add("EstimationDuration", "Estimation Duration");
 
-            // Collumn header each field from database
-            dtViewEmployee.Columns.Add("Id", "Employee Id");
-            dtViewEmployee.Columns.Add("Name", "Name");
-            dtViewEmployee.Columns.Add("Email", "Email");
-            dtViewEmployee.Columns.Add("PhoneNumber", "Phone Number");
-            dtViewEmployee.Columns.Add("Address", "Address");
-            dtViewEmployee.Columns.Add("DateofBirth", "Date of Birth");
-            dtViewEmployee.Columns.Add("JobTitle", "Job Title");
-            dtViewEmployee.Columns.Add("Salary", "Salary");
 
-            foreach (DataGridViewColumn column in dtViewEmployee.Columns)
+            foreach (DataGridViewColumn column in dtViewService.Columns)
             {
                 column.DataPropertyName = column.Name;
             }
 
             // Combo box display name job
-            SqlDataAdapter sqa = new SqlDataAdapter("SELECT Id, Name FROM Job", con);
+            DataTable? ctr = Data_Access_Layer.SelectData("Category");
+            DataTable? unt = Data_Access_Layer.SelectData("Unit");
 
-            DataTable dta = new DataTable();
-            sqa.Fill(dta);
-
+            // Create a new DataTable and add columns
             DataTable newdta = new DataTable();
-            newdta.Columns.Add("JobId");
+            newdta.Columns.Add("CategoryId");
             newdta.Columns.Add("Name");
+
+            // Add an empty row as the default selection
             newdta.Rows.Add(0, "");
 
-            newdta.Merge(dta);
+            // Merge the retrieved data into the new DataTable
+            if (ctr != null)
+            {
+                newdta.Merge(ctr);
+            }
+            // Set up ComboBox properties
+            inp_category.DisplayMember = "Name";
+            inp_category.ValueMember = "CategoryId";
+            inp_category.DataSource = newdta;
 
-            inp_combo.DisplayMember = "Name";
-            inp_combo.ValueMember = "JobId";
-            inp_combo.DataSource = newdta;
+            // Set the default selected index
+            inp_category.SelectedIndex = 0;
 
-            inp_combo.SelectedIndex = 0;
+            // Set the ComboBox style
+            inp_category.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            inp_combo.DropDownStyle = ComboBoxStyle.DropDownList;
-            con.Close();
-            dtViewEmployee.SelectionChanged += dtViewEmployee_SelectionChanged; // Attach SelectionChanged event handler
+            DataTable untdta = new DataTable();
+            untdta.Columns.Add("CategoryId");
+            untdta.Columns.Add("Name");
+
+            // Add an empty row as the default selection
+            untdta.Rows.Add(0, "");
+
+            // Merge the retrieved data into the new DataTable
+            if (unt != null)
+            {
+                untdta.Merge(unt);
+            }
+            // Set up ComboBox properties
+            inp_unit.DisplayMember = "Name";
+            inp_unit.ValueMember = "UnitId";
+            inp_unit.DataSource = untdta;
+
+            // Set the default selected index
+            inp_unit.SelectedIndex = 0;
+
+            // Set the ComboBox style
+            inp_unit.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            dtViewService.SelectionChanged += dtViewService_SelectionChanged; // Attach SelectionChanged event handler
         }
 
-        private void dtViewEmployee_SelectionChanged(object? sender, EventArgs e)
+        private void dtViewService_SelectionChanged(object? sender, EventArgs e)
         {
-            isRowSelected = dtViewEmployee.SelectedRows.Count > 0;
+            isRowSelected = dtViewService.SelectedRows.Count > 0;
         }
-        private void dtViewEmployee_CellClick(object? sender, DataGridViewCellEventArgs e)
+        private void dtViewService_CellClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
                 // Get the selected row's data ID
-                DataGridViewRow row = dtViewEmployee.Rows[e.RowIndex];
+                DataGridViewRow row = dtViewService.Rows[e.RowIndex];
                 selectedId = Convert.ToInt32(row.Cells["Id"].Value);
 
                 // Do something with the data ID...
-                SqlConnection con = ConnDatabase.Conn();
-                con.Open();
-                SqlDataAdapter dt_Emp = new SqlDataAdapter("SELECT Employee.Id, Employee.Password, Employee.Name, Employee.Email, Employee.PhoneNumber, Employee.Address, Employee.DateofBirth, Employee.IdJob, Employee.Salary FROM Employee WHERE Employee.Id = @IdEmployee", con);
-                dt_Emp.SelectCommand.Parameters.AddWithValue("@IdEmployee", selectedId);
-                // 
-                DataTable dt = new DataTable();
-                dt_Emp.Fill(dt);
+                DataTable? MDT = Data_Access_Layer.SelectDataWhere("Service", selectedId);
 
-                if (dt.Rows.Count > 0)
+                if (MDT != null && MDT.Rows.Count > 0)
                 {
-                    DataRow DtField = dt.Rows[0];
+                    DataRow DtField = MDT.Rows[0];
                     inp_id.Text = DtField["Id"].ToString();
-                    inp_password.Text = DtField["Password"].ToString();
-                    inp_conpassword.Text = DtField["Password"].ToString();
                     inp_name.Text = DtField["Name"].ToString();
-                    inp_email.Text = DtField["Email"].ToString();
-                    inp_phone.Text = DtField["PhoneNumber"].ToString();
-                    inp_address.Text = DtField["Address"].ToString();
-
-                    string? dateOfBirthString = DtField["DateofBirth"]?.ToString();
-                    DateTime dateOfBirth = dateOfBirthString != null ? DateTime.ParseExact(dateOfBirthString, "dd/MM/yyyy", CultureInfo.InvariantCulture) : DateTime.MinValue;
-                    inp_date.Value = dateOfBirth;
+                    inp_category.SelectedIndex = Convert.ToInt32(DtField["IdCategory"]);
+                    inp_unit.SelectedIndex = Convert.ToInt32(DtField["IdUnit"]);
 
 
-                    inp_combo.SelectedIndex = Convert.ToInt32(DtField["IdJob"]);
-
-                    decimal salary = Convert.ToDecimal(DtField["Salary"]);
-                    inp_numeric.Value = Math.Floor(salary);
+                    if (Decimal.TryParse(DtField["PriceUnit"].ToString(), out decimal price))
+                    {
+                        inp_price.Value = Math.Floor(price);
+                    }
+                    if (Decimal.TryParse(DtField["EstimationDuration"].ToString(), out decimal estimation))
+                    {
+                        inp_est.Value = Math.Floor(estimation);
+                    }
                 }
-                else
-                {
-                    inp_id.Text = string.Empty;
-                    inp_name.Text = string.Empty;
-                    inp_password.Text = string.Empty;
-                    inp_conpassword.Text = string.Empty;
-                    inp_email.Text = string.Empty;
-                    inp_phone.Text = string.Empty;
-                    inp_address.Text = string.Empty;
-                    inp_date.Value = DateTime.Now;
-                    inp_combo.SelectedIndex = 0;
-                    inp_numeric.Value = 0;
-                }
-                con.Close();
             }
         }
+
         private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             // Cancel the sorting operation
-            dtViewEmployee.Columns[e.ColumnIndex].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dtViewService.Columns[e.ColumnIndex].SortMode = DataGridViewColumnSortMode.NotSortable;
         }
 
         private void btn_insert_Click(object sender, EventArgs e)
         {
+            ClearField();
             EnabledField(true);
             EnabledField(false, true);
-            ClearField();
-            SqlConnection con = ConnDatabase.Conn();
-            con.Open();
-            SqlDataAdapter sqa = new SqlDataAdapter("INSERT INTO Employee VALUES", con);
         }
         private void btn_update_Click(object sender, EventArgs e)
         {
@@ -213,31 +256,147 @@ namespace Test.Form_Application
                 return;
             }
 
-            DialogResult result = MessageBox.Show("Do you want to perform the update?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("Would you like to delete this data?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
-                // Perform the update logic...
+                // Perform the delete logic...
+                int idService = Convert.ToInt32(inp_id.Text);
+                int rowEffect = Data_Access_Layer.DeleteData("Service", idService);
+                // Close the MessageBox
+                if (rowEffect > 0)
+                {
+                    MessageBox.Show($"Delete completed for Service with ID {idService}!", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Perform delete operation and check its success
+                    DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
+                    dtViewService.DataSource = dt;
+                }
+                else
+                {
+                    MessageBox.Show($"Delete failed for Service with ID {idService}.", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
-                // Close the MessageBox
-                MessageBox.Show("Update completed.", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else if (result == DialogResult.Cancel)
-            {
-                // Close the MessageBox
             }
         }
+
+
         private void btn_save_Click(object sender, EventArgs e)
         {
-            EnabledField(false);
-            EnabledField(true, false);
-            MessageBox.Show($"{"Save"}");
+            if (ValidateInput())
+            {
+                string id = inp_id.Text;
+
+                // Check if the ID exists in the database
+                bool isIdUnique = Data_Access_Layer.IsPhoneNumberUnique("Service", "Id", id);
+
+                string name = inp_name.Text;
+
+                int numericprice = Convert.ToInt32(Math.Floor(inp_price.Value));
+                int numericest = Convert.ToInt32(Math.Floor(inp_est.Value));
+                int Selectedcat = inp_category.SelectedIndex;
+                int Selectedunt = inp_unit.SelectedIndex;
+
+                if (isIdUnique)
+                {
+                    // Insert data into the database
+                    int insertResult = Data_Access_Layer.InsertDataService("Service", id, name, Selectedcat, Selectedunt, numericprice, numericest);
+                    DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
+                    dtViewService.DataSource = dt;
+                    MessageBox.Show("Success!");
+                    EnabledField(false);
+                    EnabledField(true, false);
+                }
+                else
+                {
+                    // Update data in the database
+                    int idValue = Convert.ToInt32(id);
+                    int updateResult = Data_Access_Layer.UpdateService(idValue, name, Selectedcat, Selectedunt, numericprice, numericest);
+                    DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
+
+                    dtViewService.DataSource = dt;
+                    MessageBox.Show($"Success Update! {idValue}, {name}, {Selectedcat}, {Selectedunt}, {numericprice}, {numericest}");
+                    EnabledField(false);
+                    EnabledField(true, false);
+                }
+
+
+                // string message = $"ID: {id}\nName: {name}\nEmail: {email}\nPhone Number: {number}\nAddress: {address}\nPassword: {password}\nSelected Value: {inp_category.SelectedIndex}\nSelected Date: {selectedDate}\nNumeric Value: {numericValue}";
+
+                // MessageBox.Show(message, "Field Values", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
         private void btn_cancel_Click(object sender, EventArgs e)
         {
+            ClearField();
             EnabledField(false);
             EnabledField(true, false);
-            MessageBox.Show($"{"Cancel"}");
+        }
+
+        private void inp_search_TextChanged(object sender, EventArgs e)
+        {
+            //Name
+            //Category
+            //Unit
+            //PriceUnit
+            string Input_Search = inp_search.Text;
+            //if (!string.IsNullOrWhiteSpace(Input_Search))
+            //{
+            //    var filterData = dt.AsEnumerable()
+            //        .Where
+            //        (
+            //        row => row.Field<int>("PriceUnit").ToString().Contains(Input_Search)
+            //        )
+            //        .CopyToDataTable();
+            //    dtViewService.DataSource = filterData;
+
+            //}
+            //else
+            //{
+            //    dtViewService.DataSource = dt;
+            //}
+            //string searchTerm = inp_search.Text;
+
+            if (!string.IsNullOrWhiteSpace(Input_Search))
+            {
+                try
+                {
+                    DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
+                    // Filter the DataTable based on the entered search term
+                    var filteredRows = dt.AsEnumerable()
+                        .Where(
+                            row => row.Field<string>("Name").ToString().Contains(Input_Search) ||
+                            row.Field<string>("Category").ToString().Contains(Input_Search) ||
+                            row.Field<string>("Unit").ToString().Contains(Input_Search) ||
+                            row.Field<int>("PriceUnit").ToString().Contains(Input_Search)
+                            )
+                        .CopyToDataTable();
+
+                    // Update the DataGridView with the filtered results
+                    dtViewService.DataSource = filteredRows;
+                }
+                catch
+                {
+                    // MessageBox.Show("Data NOT FOUND");
+                    // DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
+                    // Reset the DataGridView to the original data
+                    dtViewService.DataSource = new DataTable();
+                }
+            }
+            else
+            {
+                DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
+                // Reset the DataGridView to the original data
+                dtViewService.DataSource = dt;
+            }
+            //DataView dv = dt.DefaultView;
+            //dv.RowFilter = string.Format("name like '%{0}%' OR category like '%{0}%' OR unit like '%{0}%'", inp_search.Text);
+            ////dv.RowFilter = string.Format("priceunit like '%{1}%'", inp_search.Text);
+            //dtViewService.DataSource = dv.ToTable();
+        }
+
+        private void inp_search_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
         }
     }
 }

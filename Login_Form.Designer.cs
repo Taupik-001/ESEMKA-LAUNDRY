@@ -59,7 +59,6 @@
             this.label2.Size = new System.Drawing.Size(55, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Username";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -70,7 +69,6 @@
             this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Password";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // input_username
             // 
@@ -79,7 +77,7 @@
             this.input_username.Name = "input_username";
             this.input_username.Size = new System.Drawing.Size(100, 20);
             this.input_username.TabIndex = 3;
-            this.input_username.Text = "apeschka1d@google.com.hk";
+            this.input_username.Text = "adefrain0@diigo.com";
             // 
             // input_password
             // 
@@ -89,7 +87,7 @@
             this.input_password.Size = new System.Drawing.Size(100, 20);
             this.input_password.TabIndex = 4;
             this.input_password.UseSystemPasswordChar = true;
-            this.input_password.Text = "dDsgZdH";
+            this.input_password.Text = "fkuXmGlww@1";
             // 
             // btn_login
             // 
