@@ -38,7 +38,7 @@ namespace Test.Form_Application
         }
         private void Package_Form_Load(object sender, EventArgs e)
         {
-            DataTable dt = Data_Access_Layer.JoinData1("Package", "Service");
+            DataTable? dt = Data_Access_Layer.JoinData1("Package", "Service");
             dataViewPackage.AutoGenerateColumns = false;
             dataViewPackage.DataSource = dt;
 

@@ -22,7 +22,7 @@ namespace Test.Form_Application
 
         private void View_Transaction_Form_Load(object sender, EventArgs e)
         {
-            DataTable dtD = Data_Access_Layer.JoinData3("DetailDeposit", "Service", "PrepaidPackage");
+            DataTable? dtD = Data_Access_Layer.JoinData3("DetailDeposit", "Service", "PrepaidPackage");
             dtDetail.AutoGenerateColumns = false;
             dtDetail.DataSource = dtD;
             //dtDetail.DataSource = dtD;
@@ -31,6 +31,7 @@ namespace Test.Form_Application
             dtDetail.Columns.Add("PriceUnit", "Price Per Unit");
             dtDetail.Columns.Add("TotalUnit", "Total Unit");
             dtDetail.Columns.Add("CompletedDatetime", "Transaction Time");
+            dtDetail.Columns.Add(btnView);
 
             //dtDetail.Columns.Add("CompleteEstimationDateTime", "Completed Estimation Time");
 
@@ -38,8 +39,10 @@ namespace Test.Form_Application
             {
                 column.DataPropertyName = column.Name;
             }
+            // // Set the button column to appear in the last cell
+            // dtDetail.Columns[dtDetail.Columns.Count - 1].DisplayIndex = dtDetail.Columns.Count - 1;
 
-            DataTable dtHead = Data_Access_Layer.JoinData2("HeaderDeposit", "Customer", "Employee");
+            DataTable? dtHead = Data_Access_Layer.JoinData2("HeaderDeposit", "Customer", "Employee");
             dtHeader.AutoGenerateColumns = false;
             dtHeader.DataSource = dtHead;
             dtHeader.Columns.Add("Id", "Id Package");
@@ -54,5 +57,13 @@ namespace Test.Form_Application
                 column.DataPropertyName = column.Name;
             }
         }
+        private void dtDetail_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == dtDetail.Columns["btnView"].Index && e.RowIndex >= 0)
+            {
+                dtDetail.Rows.RemoveAt(e.RowIndex);
+            }
+        }
     }
+
 }

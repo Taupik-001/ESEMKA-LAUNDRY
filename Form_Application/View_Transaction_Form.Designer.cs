@@ -35,7 +35,7 @@
             dtDetail = new DataGridView();
             label2 = new Label();
             label3 = new Label();
-            Column1 = new DataGridViewButtonColumn();
+            btnView = new DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)dtHeader).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dtDetail).BeginInit();
             SuspendLayout();
@@ -84,16 +84,61 @@
             dtHeader.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dtHeader.Size = new Size(648, 187);
             dtHeader.TabIndex = 3;
-            // 
-            // dtDetail
-            // 
+            // // 
+            // // dtDetail
+            // // 
+            // dtDetail.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            // dtDetail.Columns.AddRange(new DataGridViewColumn[] { btnView });
+            // dtDetail.Location = new Point(213, 331);
+            // dtDetail.Name = "dtDetail";
+            // dtDetail.RowTemplate.Height = 25;
+            // dtDetail.Size = new Size(648, 176);
+            // dtDetail.TabIndex = 11;
+            // // 
+            // // btnView
+            // // 
+            // btnView.HeaderText = "Action";
+            // btnView.Name = "btnView";
+            // Create a button column
+            // DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn();
+            // Create a button column
+            // DataGridViewButtonColumn btnView = new DataGridViewButtonColumn();
+            //             btnView.HeaderText = "Action";
+            //             btnView.Text = "Click Me";
+            //             btnView.UseColumnTextForButtonValue = true;
+
+            //             // Insert the button column at the last column position
+            //             dtDetail.Columns.Insert(dtDetail.Columns.Count, btnView);
+
+            //             // Adjust the size and position of the DataGridView
+            //             dtDetail.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            //             dtDetail.Location = new Point(213, 331);
+            //             dtDetail.Name = "dtDetail";
+            //             dtDetail.RowTemplate.Height = 25;
+            //             dtDetail.Size = new Size(648, 176);
+            //             dtDetail.TabIndex = 11;
+            //             // Create the button column
+            // DataGridViewButtonColumn btnView = new DataGridViewButtonColumn();
+            btnView.HeaderText = "Action";
+            btnView.Text = "Click Me";
+            btnView.UseColumnTextForButtonValue = true;
+
+            // Insert the button column at the last column position
+            
+
+            // Adjust the size and position of the DataGridView
             dtDetail.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dtDetail.Columns.AddRange(new DataGridViewColumn[] { Column1 });
             dtDetail.Location = new Point(213, 331);
             dtDetail.Name = "dtDetail";
             dtDetail.RowTemplate.Height = 25;
             dtDetail.Size = new Size(648, 176);
             dtDetail.TabIndex = 11;
+            dtDetail.CellContentClick += dtDetail_CellContentClick;
+
+            
+
+
+
             // 
             // label2
             // 
@@ -112,11 +157,6 @@
             label3.Size = new Size(80, 15);
             label3.TabIndex = 13;
             label3.Text = "Detail Deposit";
-            // 
-            // Column1
-            // 
-            Column1.HeaderText = "Action";
-            Column1.Name = "Column1";
             // 
             // View_Transaction_Form
             // 
@@ -156,6 +196,6 @@
         private DataGridView dtDetail;
         private Label label2;
         private Label label3;
-        private DataGridViewButtonColumn Column1;
+        private DataGridViewButtonColumn btnView;
     }
 }

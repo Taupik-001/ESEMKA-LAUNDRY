@@ -189,12 +189,12 @@ namespace Test.Form_Application
             // Retrieve data from the database
             // LoadData();
             // using (var context = new EsemkaContext())
-            var context = new EsemkaContext();
             // {
             // List<Employee> employeeList = context.Employees.Include(e => e.Job).ToList();
             // dtViewEmployee.DataSource = employeeList;
-            List<Employee> employeeList = context.Employees.Include(e => e.Job).ToList();
-            dtViewEmployee.DataSource = employeeList.Select(e => new
+            var context = new EsemkaContext();
+            List<Employee>? employeeList = context.Employees?.Include(e => e.Job).ToList();
+            dtViewEmployee.DataSource = employeeList?.Select(e => new
             {
                 e.DateOfBirth,
                 e.Id,
@@ -205,7 +205,7 @@ namespace Test.Form_Application
                 e.PhoneNumber,
                 // e.IdJob,
                 e.Salary,
-                NameJob = e.Job.Name  // Include the Job Name in the selection
+                NameJob = e.Job?.Name  // Include the Job Name in the selection
             }).ToList();
             // lbl_address = employeeList.Select(Name);
             // }
@@ -225,8 +225,8 @@ namespace Test.Form_Application
 
             Job defaultJob = new Job { Id = 0, Name = "" };
 
-            List<Job> jobList = context.Jobs.ToList();
-            jobList.Insert(0, defaultJob);
+            List<Job>? jobList = context.Jobs?.ToList();
+            jobList?.Insert(0, defaultJob);
 
             inp_combo.DisplayMember = "Name";
             inp_combo.ValueMember = "Id";
@@ -240,6 +240,7 @@ namespace Test.Form_Application
             dtViewEmployee.SelectionChanged += dtViewEmployee_SelectionChanged; // Attach SelectionChanged event handler
         }
         private void LoadData()
+
         {
             // using (var context = new EmployeeContext())
             // {
@@ -257,8 +258,8 @@ namespace Test.Form_Application
             {
                 // List<Employee> employeeList = context.Employees.Include(e => e.Job).ToList();
                 // dtViewEmployee.DataSource = employeeList;
-                List<Employee> employeeList = context.Employees.Include(e => e.Job).ToList();
-                dtViewEmployee.DataSource = employeeList.Select(e => new
+                List<Employee>? employeeList = context.Employees?.Include(e => e.Job).ToList();
+                dtViewEmployee.DataSource = employeeList?.Select(e => new
                 {
                     e.DateOfBirth,
                     e.Id,
@@ -267,9 +268,8 @@ namespace Test.Form_Application
                     e.Email,
                     e.Address,
                     e.PhoneNumber,
-                    // e.IdJob,
                     e.Salary,
-                    NameJob = e.Job.Name  // Include the Job Name in the selection
+                    NameJob = e.Job?.Name  // Include the Job Name in the selection
                 }).ToList();
                 // lbl_address = employeeList.Select(Name);
             }
@@ -288,7 +288,6 @@ namespace Test.Form_Application
                 // Get the selected row's data ID
                 DataGridViewRow row = dtViewEmployee.Rows[e.RowIndex];
                 selectedId = Convert.ToInt32(row.Cells["Id"].Value);
-
                 // Do something with the data ID...
                 DataTable? dt = Data_Access_Layer.SelectDataWhere("Employee", selectedId);
 
@@ -329,76 +328,7 @@ namespace Test.Form_Application
             ClearField();
             EnabledField(true);
             EnabledField(false, true);
-            SaveDataGridViewToPDF(dtViewEmployee);
         }
-        private void SaveDataGridViewToPDF(DataGridView dataGridView)
-        {
-            // Create a new SaveFileDialog instance
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-
-            // Set the default file name and extension
-            saveFileDialog.FileName = "data.pdf";
-            saveFileDialog.DefaultExt = ".pdf";
-
-            // Set the file filter
-            saveFileDialog.Filter = "PDF files (*.pdf)|*.pdf|All files (*.*)|*.*";
-
-            // Show the SaveFileDialog and wait for the user's selection
-            DialogResult result = saveFileDialog.ShowDialog();
-
-            // If the user clicked the Save button
-            if (result == DialogResult.OK)
-            {
-                // Get the selected file path
-                string filePath = saveFileDialog.FileName;
-
-                // Create a new PDF document
-                Document document = new Document();
-
-                try
-                {
-                    // Create a new PDF writer
-                    PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create));
-
-                    // Open the document
-                    document.Open();
-
-                    // Create a new table with the same number of columns as the DataGridView
-                    PdfPTable table = new PdfPTable(dataGridView.Columns.Count);
-
-                    // Add table headers
-                    for (int i = 0; i < dataGridView.Columns.Count; i++)
-                    {
-                        table.AddCell(new Phrase(dataGridView.Columns[i].HeaderText));
-                    }
-
-                    // Add table rows
-                    for (int i = 0; i < dataGridView.Rows.Count; i++)
-                    {
-                        for (int j = 0; j < dataGridView.Columns.Count; j++)
-                        {
-                            if (dataGridView.Rows[i].Cells[j].Value != null)
-                            {
-                                table.AddCell(new Phrase(dataGridView.Rows[i].Cells[j].Value.ToString()));
-                            }
-                        }
-                    }
-
-                    // Add the table to the document
-                    document.Add(table);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                finally
-                {
-                    // Close the document
-                    document.Close();
-                }
-            }
-        }
-
         private void btn_update_Click(object sender, EventArgs e)
         {
             if (!isRowSelected)
@@ -511,9 +441,16 @@ namespace Test.Form_Application
         private void inp_search_TextChanged(object sender, EventArgs e)
         {
             DataTable? dt = Data_Access_Layer.JoinData("Employee", "Job");
-            DataView dv = dt.DefaultView;
-            dv.RowFilter = string.Format("name like '%{0}%' OR phonenumber like '%{0}%' OR email like '%{0}%'", inp_search.Text);
-            dtViewEmployee.DataSource = dv.ToTable();
+            DataView? dv = dt?.DefaultView;
+            string filterExpression = string.Format("name like '%{0}%' OR phonenumber like '%{0}%' OR email like '%{0}%'", inp_search.Text);
+
+            if (dv != null)
+            {
+                DataView filteredView = new DataView(dv.ToTable());
+                filteredView.RowFilter = filterExpression;
+                dtViewEmployee.DataSource = filteredView;
+            }
+
         }
 
         private void inp_search_KeyPress(object sender, KeyPressEventArgs e)

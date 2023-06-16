@@ -14,5 +14,11 @@ namespace Test
         public int PriceUnit { get; set; }
         public decimal TotalUnit { get; set; }
         public DateTime CompletedDatetime { get; set; }
+        [ForeignKey("IdDeposit")]
+        public virtual HeaderDeposit? HeaderDeposit { get; set; }
+        [ForeignKey("IdService")]
+        public virtual Service? Service { get; set; }
+        [ForeignKey("IdPrepaidPackage")]
+        public virtual PrepaidPackage? PrepaidPackage { get; set; }
     }
 }

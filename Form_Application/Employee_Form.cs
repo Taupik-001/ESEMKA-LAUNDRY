@@ -6,13 +6,15 @@ using System.Data;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Test.Form_Application
 {
     public partial class Employee_Form : Base_Form
     {
+        private EsemkaContext contextEmp = new EsemkaContext();
         private bool isRowSelected = false;
+        private bool isInsert = false;
         private int selectedId;
         public Employee_Form()
         {
@@ -152,65 +154,61 @@ namespace Test.Form_Application
             EnabledField(false);
             EnabledField(true, false);
 
-            DataTable? dt = Data_Access_Layer.JoinData("Employee", "Job");
-            dtViewEmployee.AutoGenerateColumns = false;
-            dtViewEmployee.DataSource = dt;
-            dtViewEmployee.AllowUserToOrderColumns = false;
-            dtViewEmployee.RowHeadersVisible = false;
-            dtViewEmployee.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill; // Set the AutoSizeColumnsMode property
-            dtViewEmployee.ReadOnly = true;
-            dtViewEmployee.AllowUserToResizeColumns = false;
-            dtViewEmployee.AllowUserToResizeRows = false;
-            dtViewEmployee.AllowUserToAddRows = false;
-            dtViewEmployee.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dtViewEmployee.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            // Define columns
-            dtViewEmployee.Columns.Add("Id", "Employee Id");
-            dtViewEmployee.Columns.Add("Name", "Name");
-            dtViewEmployee.Columns.Add("Email", "Email");
-            dtViewEmployee.Columns.Add("PhoneNumber", "Phone Number");
-            dtViewEmployee.Columns.Add("Address", "Address");
-            dtViewEmployee.Columns.Add("DateofBirth", "Date of Birth");
-            dtViewEmployee.Columns.Add("JobTitle", "Job Title");
-            dtViewEmployee.Columns.Add("Salary", "Salary");
-            //dtViewEmployee.Rows.RemoveAt(dtViewEmployee.Rows.Count - 1);
-
-            foreach (DataGridViewColumn column in dtViewEmployee.Columns)
+            List<Employee>? employeeList = contextEmp.Employees?.Include(e => e.Job).ToList();
+            dtViewEmployee.DataSource = employeeList?.Select(e => new
             {
-                column.DataPropertyName = column.Name;
-            }
+                e.Id,
+                e.Name,
+                e.Email,
+                e.PhoneNumber,
+                e.Address,
+                e.DateOfBirth,
+                NameJob = e.Job?.Name,
+                e.Salary
+            }).ToList();
+
+            // Define columns
+            dtViewEmployee.Columns["Id"].HeaderText = "Employee Id";
+            dtViewEmployee.Columns["PhoneNumber"].HeaderText = "Phone Number";
+            dtViewEmployee.Columns["DateOfBirth"].HeaderText = "Date of Birth";
+            dtViewEmployee.Columns["NameJob"].HeaderText = "Title Job";
 
             // Combo box display name job
-            // Retrieve data from the database
-            DataTable? dta = Data_Access_Layer.SelectData("Job");
+            Job defaultJob = new Job { Id = 0, Name = "" };
 
+            List<Job>? jobList = contextEmp.Jobs?.ToList();
+            jobList?.Insert(0, defaultJob);
 
-            // Create a new DataTable and add columns
-            DataTable newdta = new DataTable();
-            newdta.Columns.Add("JobId");
-            newdta.Columns.Add("Name");
-
-            // Add an empty row as the default selection
-            newdta.Rows.Add(0, "");
-
-            // Merge the retrieved data into the new DataTable
-            if (dta != null)
-            {
-                newdta.Merge(dta);
-            }
-
-            // Set up ComboBox properties
             inp_combo.DisplayMember = "Name";
-            inp_combo.ValueMember = "JobId";
-            inp_combo.DataSource = newdta;
-
-            // Set the default selected index
+            inp_combo.ValueMember = "Id";
+            inp_combo.DataSource = jobList;
             inp_combo.SelectedIndex = 0;
 
-            // Set the ComboBox style
             inp_combo.DropDownStyle = ComboBoxStyle.DropDownList;
+        }
+        private void inp_search_TextChanged(object sender, EventArgs e)
+        {
+            // Make textbox to Input Search String lower
+            string searchText = inp_search.Text.ToLower();
 
-            dtViewEmployee.SelectionChanged += dtViewEmployee_SelectionChanged; // Attach SelectionChanged event handler
+            var filteredData = contextEmp.Employees?
+                .Where(e => e.Id.ToString().Contains(searchText) ||
+                    (e.Name != null && e.Name.ToLower().Contains(searchText)) ||
+                    (e.PhoneNumber != null && e.PhoneNumber.ToLower().Contains(searchText)) ||
+                    (e.Email != null && e.Email.ToLower().Contains(searchText)))
+                .Select(e => new
+                {
+                    e.Id,
+                    e.Name,
+                    e.Email,
+                    e.PhoneNumber,
+                    e.Address,
+                    e.DateOfBirth,
+                    NameJob = e.Job != null ? e.Job.Name : null,
+                    e.Salary
+                })
+                .ToList();
+            dtViewEmployee.DataSource = filteredData;
         }
 
         private void dtViewEmployee_SelectionChanged(object? sender, EventArgs e)
@@ -229,30 +227,25 @@ namespace Test.Form_Application
                 // Do something with the data ID...
                 DataTable? dt = Data_Access_Layer.SelectDataWhere("Employee", selectedId);
 
-                if (dt != null && dt.Rows.Count > 0)
+                var EmployeesList = contextEmp.Employees?.FirstOrDefault(e => e.Id == selectedId);
+
+                if (EmployeesList != null)
                 {
-                    DataRow DtField = dt.Rows[0];
-                    inp_id.Text = DtField["Id"].ToString();
-                    inp_password.Text = DtField["Password"].ToString();
-                    inp_conpassword.Text = DtField["Password"].ToString();
-                    inp_name.Text = DtField["Name"].ToString();
-                    inp_email.Text = DtField["Email"].ToString();
-                    inp_phone.Text = DtField["PhoneNumber"].ToString();
-                    inp_address.Text = DtField["Address"].ToString();
-                    inp_combo.SelectedIndex = Convert.ToInt32(DtField["IdJob"]);
-
-                    if (DateTime.TryParseExact(DtField["DateofBirth"].ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateOfBirth))
-                    {
-                        string formattedDate = dateOfBirth.ToString("yyyy-MM-dd");
-                        inp_date.Text = formattedDate;
-                    }
-
-                    if (Decimal.TryParse(DtField["Salary"].ToString(), out decimal salary))
-                    {
-                        inp_numeric.Value = Math.Floor(salary);
-                    }
+                    inp_id.Text = EmployeesList.Id.ToString();
+                    inp_password.Text = EmployeesList.Password;
+                    inp_conpassword.Text = EmployeesList.Password;
+                    inp_name.Text = EmployeesList.Name;
+                    inp_email.Text = EmployeesList.Email;
+                    inp_phone.Text = EmployeesList.PhoneNumber;
+                    inp_address.Text = EmployeesList.Address;
+                    inp_combo.SelectedIndex = EmployeesList.IdJob;
+                    string formattedDate = EmployeesList.DateOfBirth.ToString("yyyy-MM-dd");
+                    inp_date.Text = formattedDate;
+                    inp_numeric.Value = Math.Floor(EmployeesList.Salary);
                 }
             }
+
+
         }
 
         private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -266,6 +259,7 @@ namespace Test.Form_Application
             ClearField();
             EnabledField(true);
             EnabledField(false, true);
+            isInsert = true;
         }
         private void btn_update_Click(object sender, EventArgs e)
         {
@@ -278,6 +272,7 @@ namespace Test.Form_Application
             {
                 EnabledField(true);
                 EnabledField(false, true);
+                isInsert = false;
             }
         }
         private void btn_delete_Click(object sender, EventArgs e)
@@ -294,16 +289,28 @@ namespace Test.Form_Application
             {
                 // Perform the delete logic...
                 int idEmployee = Convert.ToInt32(inp_id.Text);
-                int rowEffect = Data_Access_Layer.DeleteData("Employee", idEmployee);
+                var rowEffect = contextEmp.Employees?.Find(idEmployee);
                 // Close the MessageBox
-                if (rowEffect > 0)
+                if (rowEffect != null)
                 {
                     MessageBox.Show($"Delete completed for employee with ID {idEmployee}!", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     // Perform delete operation and check its success
+                    contextEmp.Employees?.Remove(rowEffect);
+                    contextEmp.SaveChanges();
 
                     // Update the DataGridView
-                    DataTable? dt = Data_Access_Layer.JoinData("Employee", "Job");
-                    dtViewEmployee.DataSource = dt;
+                    List<Employee>? listEmp = contextEmp.Employees?.Include(e => e.Job).ToList();
+                    dtViewEmployee.DataSource = listEmp?.Select(e => new
+                    {
+                        e.Id,
+                        e.Name,
+                        e.Email,
+                        e.PhoneNumber,
+                        e.Address,
+                        e.DateOfBirth,
+                        NameJob = e.Job?.Name,
+                        e.Salary
+                    }).ToList();
                 }
                 else
                 {
@@ -320,7 +327,7 @@ namespace Test.Form_Application
                 int id = Convert.ToInt32(inp_id.Text);
 
                 // Check if the ID exists in the database
-                bool isIdUnique = Data_Access_Layer.IsCheckUnique("Employee", "Id", id);
+                var isIdUnique = contextEmp.Employees?.Find(id);
 
                 string name = inp_name.Text;
                 string email = inp_email.Text;
@@ -332,41 +339,82 @@ namespace Test.Form_Application
                 int numericValue = Convert.ToInt32(Math.Floor(inp_numeric.Value));
                 int Selectedcombo = inp_combo.SelectedIndex;
 
-                if (isIdUnique)
+                if (isInsert)
                 {
+                    if (isIdUnique != null)
+                    {
+                        MessageBox.Show($"Please use Update button the Data already Exist for that Id {id}");
+                        return;
+                    }
+
                     //Insert data into the database
-                    int insertResult = Data_Access_Layer.InsertDataEmployee("Employee", id, name, email, password, number, address, selectedDate, numericValue, Selectedcombo);
-                    DataTable? dt = Data_Access_Layer.JoinData("Employee", "Job");
-                    dtViewEmployee.DataSource = dt;
-                    MessageBox.Show("Success!");
+                    var insertData = new Employee
+                    {
+                        Password = password,
+                        Name = name,
+                        Email = email,
+                        Address = address,
+                        PhoneNumber = number,
+                        DateOfBirth = selectedDate,
+                        IdJob = Selectedcombo,
+                        Salary = numericValue
+                    };
+                    contextEmp.Employees?.Add(insertData);
+                    contextEmp.SaveChanges();
+
+                    List<Employee>? employeeList = contextEmp.Employees?.Include(e => e.Job).ToList();
+                    dtViewEmployee.DataSource = employeeList?.Select(e => new
+                    {
+                        e.Id,
+                        e.Name,
+                        e.Email,
+                        e.PhoneNumber,
+                        e.Address,
+                        e.DateOfBirth,
+                        NameJob = e.Job?.Name,
+                        e.Salary
+                    }).ToList();
+                    MessageBox.Show($"Success insert data for Id! {insertData.Id}");
                     EnabledField(false);
                     EnabledField(true, false);
                 }
                 else
                 {
+                    if (isIdUnique == null)
+                    {
+                        MessageBox.Show($"Please use Insert button to insert that data Id {id}");
+                        return;
+                    }
                     // Update data in the database
-                    int idValue = Convert.ToInt32(inp_id.Text);
-                    int updateResult = Data_Access_Layer.UpdateData(idValue, name, email, password, number, address, selectedDate, numericValue, Selectedcombo);
-                    DataTable? dt = Data_Access_Layer.JoinData("Employee", "Job");
-                    dtViewEmployee.DataSource = dt;
                     MessageBox.Show($"Success Update!");
+                    isIdUnique.Name = name;
+                    isIdUnique.Email = email;
+                    isIdUnique.Password = password;
+                    isIdUnique.PhoneNumber = number;
+                    isIdUnique.Address = address;
+                    isIdUnique.DateOfBirth = selectedDate;
+                    isIdUnique.IdJob = Selectedcombo;
+                    isIdUnique.Salary = numericValue;
+                    contextEmp.SaveChanges();
+                    List<Employee>? listEmp = contextEmp.Employees?.Include(e => e.Job).ToList();
+                    dtViewEmployee.DataSource = listEmp?.Select(e => new
+                    {
+                        e.Id,
+                        e.Name,
+                        e.Email,
+                        e.PhoneNumber,
+                        e.Address,
+                        e.DateOfBirth,
+                        NameJob = e.Job?.Name,
+                        e.Salary
+                    }).ToList();
                     EnabledField(false);
                     EnabledField(true, false);
-                    //{ idValue}
-                    //{ name}
-                    //{ email}
-                    //{ password}
-                    //{ number}
-                    //{ address}
-                    //{ selectedDate}
-                    //{ numericValue}
-                    //{ Selectedcombo}
                 }
             }
         }
         private void btn_cancel_Click(object sender, EventArgs e)
         {
-            ClearField();
             EnabledField(false);
             EnabledField(true, false);
         }
@@ -375,18 +423,8 @@ namespace Test.Form_Application
         {
 
         }
-
-        private void inp_search_TextChanged(object sender, EventArgs e)
-        {
-            DataTable? dt = Data_Access_Layer.JoinData("Employee", "Job");
-            DataView dv = dt.DefaultView;
-            dv.RowFilter = string.Format("name like '%{0}%' OR phonenumber like '%{0}%' OR email like '%{0}%'", inp_search.Text);
-            dtViewEmployee.DataSource = dv.ToTable();
-        }
-
         private void inp_search_KeyPress(object sender, KeyPressEventArgs e)
         {
-
         }
     }
 }

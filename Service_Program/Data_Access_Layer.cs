@@ -43,7 +43,7 @@ namespace Test.Service_Program
             string query = $"SELECT COUNT(*) FROM {table} WHERE {column} = {phoneNumber}";
 
             // Execute the query and get the result
-            DataTable result = ExecuteQuery(query);
+            DataTable? result = ExecuteQuery(query);
 
             // Check if the result contains any rows
             if (result != null && result.Rows.Count > 0)
@@ -61,7 +61,7 @@ namespace Test.Service_Program
         public static bool IsCheckUnique(string table, string column, int id)
         {
             string query = $"SELECT COUNT(*) FROM {table} WHERE {column} = {id}";
-            DataTable result = ExecuteQuery(query);
+            DataTable? result = ExecuteQuery(query);
             if (result != null && result.Rows.Count > 0)
             {
                 // Get the count value from the first row and convert it to an integer

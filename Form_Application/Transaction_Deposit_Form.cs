@@ -15,7 +15,7 @@ namespace Test.Form_Application
 {
     public partial class Transaction_Deposit_Form : Base_Form
     {
-        private Add_Customer_Form modalDialog; // Declare an instance variable for the modal dialog form
+        private Add_Customer_Form? modalDialog; // Declare an instance variable for the modal dialog form
         public Transaction_Deposit_Form()
         {
             InitializeComponent();

@@ -15,7 +15,7 @@ namespace Test.Form_Application
 {
     public partial class Prepaid_Package_Form : Base_Form
     {
-        private Add_Customer_Form modalDialog;
+        private Add_Customer_Form? modalDialog;
         public Prepaid_Package_Form()
         {
             InitializeComponent();
@@ -48,7 +48,7 @@ namespace Test.Form_Application
 
         private void Prepaid_Package_Form_Load(object sender, EventArgs e)
         {
-            DataTable dt = Data_Access_Layer.JoinData1("PrepaidPackage", "Customer", "Package");
+            DataTable? dt = Data_Access_Layer.JoinData1("PrepaidPackage", "Customer", "Package");
             dtViewPrepaidPackage.AutoGenerateColumns = false;
             dtViewPrepaidPackage.DataSource = dt;
 

@@ -14,11 +14,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Web;
+using Microsoft.EntityFrameworkCore;
 
 namespace Test.Form_Application
 {
     public partial class Service_Form : Base_Form
     {
+        private EsemkaContext context = new EsemkaContext();
         private bool isRowSelected = false;
         private int selectedId;
         public Service_Form()
@@ -102,14 +104,11 @@ namespace Test.Form_Application
         }
         // Update the DataGridView
         DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
-        //DataTable? daata = Data_Access_Layer.JoinData("Service", "Category", "Unit");
-        //DataTable? daata = Data_Access_Layer.JoinData("Service", "Category", "Unit");
         private void Manage_Service_Load(object sender, EventArgs e)
         {
             EnabledField(false);
             EnabledField(true, false);
 
-            dtViewService.AutoGenerateColumns = false;
             dtViewService.DataSource = dt;
             dtViewService.AllowUserToOrderColumns = false;
             dtViewService.RowHeadersVisible = false;
@@ -119,69 +118,43 @@ namespace Test.Form_Application
             dtViewService.AllowUserToResizeRows = false;
             dtViewService.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dtViewService.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            // Define columns
-            dtViewService.Columns.Add("Id", "Service Id");
-            dtViewService.Columns.Add("Name", "Service Name");
-            dtViewService.Columns.Add("Category", "Category");
-            dtViewService.Columns.Add("Unit", "Unit");
-            dtViewService.Columns.Add("PriceUnit", "Price");
-            dtViewService.Columns.Add("EstimationDuration", "Estimation Duration");
 
+            List<Service>? serviceList = context.Services?
+            .Include(e => e.Category)
+            .Include(e => e.Unit)
+            .ToList();
 
-            foreach (DataGridViewColumn column in dtViewService.Columns)
+            dtViewService.DataSource = serviceList?.Select(e => new
             {
-                column.DataPropertyName = column.Name;
+                e.Id,
+                e.Name,
+                Category = e.Category?.Name,
+                Unit = e.Unit?.Name,
+                Price = e.PriceUnit,
+                e.EstimationDuration
             }
+            ).ToList();
+
+            dtViewService.Columns["Id"].HeaderText = "Service Id";
+            dtViewService.Columns["Name"].HeaderText = "Service Name";
+            dtViewService.Columns["EstimationDuration"].HeaderText = "Estimation Duration";
+
+
 
             // Combo box display name job
-            DataTable? ctr = Data_Access_Layer.SelectData("Category");
-            DataTable? unt = Data_Access_Layer.SelectData("Unit");
+            Customer defaultCustomer = new Customer { Id = 0, Name = "" };
+            Unit defaultUnit = new Unit { Id = 0, Name = "" };
 
-            // Create a new DataTable and add columns
-            DataTable newdta = new DataTable();
-            newdta.Columns.Add("CategoryId");
-            newdta.Columns.Add("Name");
 
-            // Add an empty row as the default selection
-            newdta.Rows.Add(0, "");
-
-            // Merge the retrieved data into the new DataTable
-            if (ctr != null)
-            {
-                newdta.Merge(ctr);
-            }
-            // Set up ComboBox properties
-            inp_category.DisplayMember = "Name";
-            inp_category.ValueMember = "CategoryId";
-            inp_category.DataSource = newdta;
 
             // Set the default selected index
             inp_category.SelectedIndex = 0;
-
-            // Set the ComboBox style
-            inp_category.DropDownStyle = ComboBoxStyle.DropDownList;
-
-            DataTable untdta = new DataTable();
-            untdta.Columns.Add("CategoryId");
-            untdta.Columns.Add("Name");
-
-            // Add an empty row as the default selection
-            untdta.Rows.Add(0, "");
-
-            // Merge the retrieved data into the new DataTable
-            if (unt != null)
-            {
-                untdta.Merge(unt);
-            }
-            // Set up ComboBox properties
-            inp_unit.DisplayMember = "Name";
-            inp_unit.ValueMember = "UnitId";
-            inp_unit.DataSource = untdta;
 
             // Set the default selected index
             inp_unit.SelectedIndex = 0;
 
             // Set the ComboBox style
+            inp_category.DropDownStyle = ComboBoxStyle.DropDownList;
             inp_unit.DropDownStyle = ComboBoxStyle.DropDownList;
 
             dtViewService.SelectionChanged += dtViewService_SelectionChanged; // Attach SelectionChanged event handler
@@ -361,18 +334,22 @@ namespace Test.Form_Application
                 try
                 {
                     DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
-                    // Filter the DataTable based on the entered search term
-                    var filteredRows = dt.AsEnumerable()
-                        .Where(
-                            row => row.Field<string>("Name").ToString().Contains(Input_Search) ||
-                            row.Field<string>("Category").ToString().Contains(Input_Search) ||
-                            row.Field<string>("Unit").ToString().Contains(Input_Search) ||
-                            row.Field<int>("PriceUnit").ToString().Contains(Input_Search)
+                    if (dt != null)
+                    {
+                        // Filter the DataTable based on the entered search term
+                        var filteredRows = dt.AsEnumerable()
+                            .Where(
+                                row => row.Field<string>("Name")?.ToString().Contains(Input_Search) == true ||
+                                row.Field<string>("Category")?.ToString().Contains(Input_Search) == true ||
+                                row.Field<string>("Unit")?.ToString().Contains(Input_Search) == true ||
+                                row.Field<int>("PriceUnit").ToString().Contains(Input_Search) == true
                             )
-                        .CopyToDataTable();
+                            .CopyToDataTable();
 
-                    // Update the DataGridView with the filtered results
-                    dtViewService.DataSource = filteredRows;
+                        // Update the DataGridView with the filtered results
+                        dtViewService.DataSource = filteredRows;
+                    }
+
                 }
                 catch
                 {
