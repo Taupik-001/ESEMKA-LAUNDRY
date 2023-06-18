@@ -99,18 +99,15 @@
             dtViewEmployee.Name = "dtViewEmployee";
             dtViewEmployee.Size = new Size(638, 172);
             dtViewEmployee.TabIndex = 3;
-            dtViewEmployee.CellClick += dtViewEmployee_CellClick;
-            dtViewEmployee.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
-            dtViewEmployee.SelectionChanged += dtViewEmployee_SelectionChanged; // Attach SelectionChanged event handler
-            dtViewEmployee.AllowUserToOrderColumns = false;
-            dtViewEmployee.RowHeadersVisible = false;
-            dtViewEmployee.ReadOnly = true;
-            dtViewEmployee.AllowUserToResizeColumns = false;
-            dtViewEmployee.AllowUserToResizeRows = false;
-            dtViewEmployee.AllowUserToAddRows = false;
-            dtViewEmployee.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+
+
+            dtViewEmployee.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dtViewEmployee.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dtViewEmployee.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dtViewEmployee.RowHeadersVisible = false;
+            dtViewEmployee.AllowUserToAddRows = false;
+            // Set the height of the header row
+            dtViewEmployee.ColumnHeadersHeight = 50; // Set the desired height in pixels
+
             // 
             // lbl_id
             // 

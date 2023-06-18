@@ -108,7 +108,12 @@
             // 
             // dataViewPackage
             // 
-            dataViewPackage.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataViewPackage.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataViewPackage.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataViewPackage.RowHeadersVisible = false;
+            dataViewPackage.AllowUserToAddRows = false;
+            // dataViewPackage.ColumnHeadersHeight = 50;
+            // Set the height of the header row
             dataViewPackage.Location = new Point(182, 122);
             dataViewPackage.Name = "dataViewPackage";
             dataViewPackage.RowTemplate.Height = 25;
@@ -154,6 +159,8 @@
             priceNum.Name = "priceNum";
             priceNum.Size = new Size(120, 23);
             priceNum.TabIndex = 22;
+            priceNum.Minimum = 0;
+            priceNum.Maximum = 1000000;
             // 
             // btn_cancel
             // 
@@ -163,6 +170,7 @@
             btn_cancel.TabIndex = 23;
             btn_cancel.Text = "Cancel";
             btn_cancel.UseVisualStyleBackColor = true;
+            btn_cancel.Click += btn_cancel_Click;
             // 
             // btn_insert
             // 
@@ -182,6 +190,8 @@
             btn_save.TabIndex = 25;
             btn_save.Text = "Save";
             btn_save.UseVisualStyleBackColor = true;
+            btn_save.Click += btn_save_Click;
+
             // 
             // btn_update
             // 
@@ -191,6 +201,8 @@
             btn_update.TabIndex = 26;
             btn_update.Text = "Update";
             btn_update.UseVisualStyleBackColor = true;
+            btn_update.Click += btn_update_Click;
+
             // 
             // btn_delete
             // 
@@ -200,6 +212,8 @@
             btn_delete.TabIndex = 27;
             btn_delete.Text = "Delete";
             btn_delete.UseVisualStyleBackColor = true;
+            btn_delete.Click += btn_delete_Click;
+
             // 
             // Package_Form
             // 

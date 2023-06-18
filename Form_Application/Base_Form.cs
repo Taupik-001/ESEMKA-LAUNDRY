@@ -102,11 +102,5 @@ namespace Test
             Form_Application.View_Transaction_Form view_transaction = new Form_Application.View_Transaction_Form();
             view_transaction.Show();
         }
-        private void button8_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            Form_Application.Data_History view_transaction = new Form_Application.Data_History();
-            view_transaction.Show();
-        }
     }
 }

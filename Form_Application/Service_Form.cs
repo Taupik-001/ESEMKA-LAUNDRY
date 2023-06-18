@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Test.Service_Program;
 using System.Data;
 using System.Data.OleDb;
 using System.Data.SqlClient;
@@ -22,6 +21,8 @@ namespace Test.Form_Application
     {
         private EsemkaContext context = new EsemkaContext();
         private bool isRowSelected = false;
+
+        private bool isInsert = false;
         private int selectedId;
         public Service_Form()
         {
@@ -102,14 +103,28 @@ namespace Test.Form_Application
                 textBox.Clear();
             }
         }
-        // Update the DataGridView
-        DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
+
+        private void DisplayToDataGridView()
+        {
+            List<Service>? serviceList = context.Services?
+           .Include(e => e.Category)
+           .Include(e => e.Unit)
+           .ToList();
+            dtViewService.DataSource = serviceList?.Select(e => new
+            {
+                e.Id,
+                e.Name,
+                Category = e.Category?.Name,
+                Unit = e.Unit?.Name,
+                Price = e.PriceUnit,
+                e.EstimationDuration
+            }).ToList();
+        }
         private void Manage_Service_Load(object sender, EventArgs e)
         {
             EnabledField(false);
             EnabledField(true, false);
 
-            dtViewService.DataSource = dt;
             dtViewService.AllowUserToOrderColumns = false;
             dtViewService.RowHeadersVisible = false;
             dtViewService.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill; // Set the AutoSizeColumnsMode property
@@ -119,44 +134,37 @@ namespace Test.Form_Application
             dtViewService.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dtViewService.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 
-            List<Service>? serviceList = context.Services?
-            .Include(e => e.Category)
-            .Include(e => e.Unit)
-            .ToList();
-
-            dtViewService.DataSource = serviceList?.Select(e => new
-            {
-                e.Id,
-                e.Name,
-                Category = e.Category?.Name,
-                Unit = e.Unit?.Name,
-                Price = e.PriceUnit,
-                e.EstimationDuration
-            }
-            ).ToList();
+            DisplayToDataGridView();
 
             dtViewService.Columns["Id"].HeaderText = "Service Id";
             dtViewService.Columns["Name"].HeaderText = "Service Name";
             dtViewService.Columns["EstimationDuration"].HeaderText = "Estimation Duration";
 
-
-
             // Combo box display name job
-            Customer defaultCustomer = new Customer { Id = 0, Name = "" };
-            Unit defaultUnit = new Unit { Id = 0, Name = "" };
-
-
-
+            Category defaultCategory = new Category { Id = 0, Name = "" };
+            List<Category>? ListCategory = context.Categorys?.ToList();
+            ListCategory?.Insert(0, defaultCategory);
+            inp_category.DisplayMember = "Name";
+            inp_category.ValueMember = "Id";
+            inp_category.DataSource = ListCategory;
             // Set the default selected index
             inp_category.SelectedIndex = 0;
 
             // Set the default selected index
+            Unit defaultUnit = new Unit { Id = 0, Name = "" };
+            List<Unit>? ListUnit = context.Units?.ToList();
+            ListUnit?.Insert(0, defaultUnit);
+
+            inp_unit.DisplayMember = "Name";
+            inp_unit.ValueMember = "Id";
+            inp_unit.DataSource = ListUnit;
             inp_unit.SelectedIndex = 0;
 
             // Set the ComboBox style
             inp_category.DropDownStyle = ComboBoxStyle.DropDownList;
             inp_unit.DropDownStyle = ComboBoxStyle.DropDownList;
-
+            dtViewService.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
+            dtViewService.CellClick += dtViewService_CellClick;
             dtViewService.SelectionChanged += dtViewService_SelectionChanged; // Attach SelectionChanged event handler
         }
 
@@ -173,30 +181,22 @@ namespace Test.Form_Application
                 selectedId = Convert.ToInt32(row.Cells["Id"].Value);
 
                 // Do something with the data ID...
-                DataTable? MDT = Data_Access_Layer.SelectDataWhere("Service", selectedId);
+                var ServiceData = context.Services?.FirstOrDefault(e => e.Id == selectedId);
 
-                if (MDT != null && MDT.Rows.Count > 0)
+                if (ServiceData != null)
                 {
-                    DataRow DtField = MDT.Rows[0];
-                    inp_id.Text = DtField["Id"].ToString();
-                    inp_name.Text = DtField["Name"].ToString();
-                    inp_category.SelectedIndex = Convert.ToInt32(DtField["IdCategory"]);
-                    inp_unit.SelectedIndex = Convert.ToInt32(DtField["IdUnit"]);
+                    inp_id.Text = ServiceData.Id.ToString();
+                    inp_name.Text = ServiceData.Name;
+                    inp_category.SelectedIndex = ServiceData.IdCategory;
+                    inp_unit.SelectedIndex = ServiceData.IdUnit;
 
-
-                    if (Decimal.TryParse(DtField["PriceUnit"].ToString(), out decimal price))
-                    {
-                        inp_price.Value = Math.Floor(price);
-                    }
-                    if (Decimal.TryParse(DtField["EstimationDuration"].ToString(), out decimal estimation))
-                    {
-                        inp_est.Value = Math.Floor(estimation);
-                    }
+                    inp_price.Value = ServiceData.PriceUnit;
+                    inp_est.Value = ServiceData.EstimationDuration;
                 }
             }
         }
 
-        private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void dataGridView1_ColumnHeaderMouseClick(object? sender, DataGridViewCellMouseEventArgs e)
         {
             // Cancel the sorting operation
             dtViewService.Columns[e.ColumnIndex].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -207,9 +207,11 @@ namespace Test.Form_Application
             ClearField();
             EnabledField(true);
             EnabledField(false, true);
+            isInsert = true;
         }
         private void btn_update_Click(object sender, EventArgs e)
         {
+            isInsert = false;
             if (!isRowSelected)
             {
                 MessageBox.Show("Please select a row to update.", "No Row Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -223,26 +225,29 @@ namespace Test.Form_Application
         }
         private void btn_delete_Click(object sender, EventArgs e)
         {
+            int idService = Convert.ToInt32(inp_id.Text);
             if (!isRowSelected)
             {
                 MessageBox.Show($"{"Please select a row to delete."}{"No Row Selected"}{MessageBoxButtons.OK}{MessageBoxIcon.Warning}");
                 return;
             }
 
-            DialogResult result = MessageBox.Show("Would you like to delete this data?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show($"Would you like to delete this data ID {idService} ?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
                 // Perform the delete logic...
-                int idService = Convert.ToInt32(inp_id.Text);
-                int rowEffect = Data_Access_Layer.DeleteData("Service", idService);
+                var rowEffect = context.Services?.Find(idService);
+
                 // Close the MessageBox
-                if (rowEffect > 0)
+                if (rowEffect != null)
                 {
                     MessageBox.Show($"Delete completed for Service with ID {idService}!", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     // Perform delete operation and check its success
-                    DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
-                    dtViewService.DataSource = dt;
+                    context.Services?.Remove(rowEffect);
+                    context.SaveChanges();
+
+                    DisplayToDataGridView();
                 }
                 else
                 {
@@ -257,45 +262,57 @@ namespace Test.Form_Application
         {
             if (ValidateInput())
             {
-                string id = inp_id.Text;
+                int id = Convert.ToInt32(inp_id.Text);
 
                 // Check if the ID exists in the database
-                bool isIdUnique = Data_Access_Layer.IsPhoneNumberUnique("Service", "Id", id);
+                var isIdUnique = context.Services?.Find(id);
 
                 string name = inp_name.Text;
-
                 int numericprice = Convert.ToInt32(Math.Floor(inp_price.Value));
                 int numericest = Convert.ToInt32(Math.Floor(inp_est.Value));
                 int Selectedcat = inp_category.SelectedIndex;
                 int Selectedunt = inp_unit.SelectedIndex;
-
-                if (isIdUnique)
+                if (isInsert)
                 {
-                    // Insert data into the database
-                    int insertResult = Data_Access_Layer.InsertDataService("Service", id, name, Selectedcat, Selectedunt, numericprice, numericest);
-                    DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
-                    dtViewService.DataSource = dt;
-                    MessageBox.Show("Success!");
-                    EnabledField(false);
-                    EnabledField(true, false);
+                    if (isIdUnique != null)
+                    {
+                        MessageBox.Show($"Unable to insert data. ID {id} already exists. If you want to update data, please use the Update button.");
+                        return;
+                    }
+                    var insertData = new Service
+                    {
+                        Name = name,
+                        IdCategory = Selectedcat,
+                        IdUnit = Selectedunt,
+                        PriceUnit = numericprice,
+                        EstimationDuration = numericest
+                    };
+                    context.Services?.Add(insertData);
+                    context.SaveChanges();
+
+                    DisplayToDataGridView();
+
+                    MessageBox.Show($"Success Insert for ID : {insertData.Id}");
                 }
                 else
                 {
+                    if (isIdUnique == null)
+                    {
+                        MessageBox.Show($"Unable to update data. ID {id} was not found. If you want to insert data, please use the Insert button.");
+                        return;
+                    }
+                    isIdUnique.Name = name;
+                    isIdUnique.IdCategory = Selectedcat;
+                    isIdUnique.IdUnit = Selectedunt;
+                    isIdUnique.PriceUnit = numericprice;
+                    isIdUnique.EstimationDuration = numericest;
                     // Update data in the database
-                    int idValue = Convert.ToInt32(id);
-                    int updateResult = Data_Access_Layer.UpdateService(idValue, name, Selectedcat, Selectedunt, numericprice, numericest);
-                    DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
-
-                    dtViewService.DataSource = dt;
-                    MessageBox.Show($"Success Update! {idValue}, {name}, {Selectedcat}, {Selectedunt}, {numericprice}, {numericest}");
-                    EnabledField(false);
-                    EnabledField(true, false);
+                    context.SaveChanges();
+                    DisplayToDataGridView();
+                    MessageBox.Show($"Success Update for ID : {id}");
                 }
-
-
-                // string message = $"ID: {id}\nName: {name}\nEmail: {email}\nPhone Number: {number}\nAddress: {address}\nPassword: {password}\nSelected Value: {inp_category.SelectedIndex}\nSelected Date: {selectedDate}\nNumeric Value: {numericValue}";
-
-                // MessageBox.Show(message, "Field Values", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                EnabledField(false);
+                EnabledField(true, false);
             }
         }
         private void btn_cancel_Click(object sender, EventArgs e)
@@ -307,68 +324,28 @@ namespace Test.Form_Application
 
         private void inp_search_TextChanged(object sender, EventArgs e)
         {
-            //Name
-            //Category
-            //Unit
-            //PriceUnit
-            string Input_Search = inp_search.Text;
-            //if (!string.IsNullOrWhiteSpace(Input_Search))
-            //{
-            //    var filterData = dt.AsEnumerable()
-            //        .Where
-            //        (
-            //        row => row.Field<int>("PriceUnit").ToString().Contains(Input_Search)
-            //        )
-            //        .CopyToDataTable();
-            //    dtViewService.DataSource = filterData;
 
-            //}
-            //else
-            //{
-            //    dtViewService.DataSource = dt;
-            //}
-            //string searchTerm = inp_search.Text;
+            string Input_Search = inp_search.Text.ToLower();
 
-            if (!string.IsNullOrWhiteSpace(Input_Search))
+            var filteredData = context.Services?
+            .Where
+            (
+                e => e.Name != null && e.Name.ToLower().Contains(Input_Search) ||
+                    (e.Category.Name.ToLower().Contains(Input_Search)) ||
+                    (e.Unit.Name.ToLower().Contains(Input_Search)) ||
+                    (e.PriceUnit.ToString().Contains(Input_Search))
+            )
+            .Select(e => new
             {
-                try
-                {
-                    DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
-                    if (dt != null)
-                    {
-                        // Filter the DataTable based on the entered search term
-                        var filteredRows = dt.AsEnumerable()
-                            .Where(
-                                row => row.Field<string>("Name")?.ToString().Contains(Input_Search) == true ||
-                                row.Field<string>("Category")?.ToString().Contains(Input_Search) == true ||
-                                row.Field<string>("Unit")?.ToString().Contains(Input_Search) == true ||
-                                row.Field<int>("PriceUnit").ToString().Contains(Input_Search) == true
-                            )
-                            .CopyToDataTable();
+                e.Id,
+                e.Name,
+                Category = e.Category != null ? e.Category.Name : null,
+                Unit = e.Unit != null ? e.Unit.Name : null,
+                Price = e.PriceUnit,
+                e.EstimationDuration
+            }).ToList();
 
-                        // Update the DataGridView with the filtered results
-                        dtViewService.DataSource = filteredRows;
-                    }
-
-                }
-                catch
-                {
-                    // MessageBox.Show("Data NOT FOUND");
-                    // DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
-                    // Reset the DataGridView to the original data
-                    dtViewService.DataSource = new DataTable();
-                }
-            }
-            else
-            {
-                DataTable? dt = Data_Access_Layer.JoinData("Service", "Category", "Unit");
-                // Reset the DataGridView to the original data
-                dtViewService.DataSource = dt;
-            }
-            //DataView dv = dt.DefaultView;
-            //dv.RowFilter = string.Format("name like '%{0}%' OR category like '%{0}%' OR unit like '%{0}%'", inp_search.Text);
-            ////dv.RowFilter = string.Format("priceunit like '%{1}%'", inp_search.Text);
-            //dtViewService.DataSource = dv.ToTable();
+            dtViewService.DataSource = filteredData;
         }
 
         private void inp_search_KeyPress(object sender, KeyPressEventArgs e)

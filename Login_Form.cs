@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using Test.Service_Program;
 using System.Collections;
 using System.Xml;
 
@@ -36,9 +35,11 @@ namespace Test
 
         private void btn_login_Click(object sender, EventArgs e)
         {
-                var employee = context.Employees?.FirstOrDefault(emp => emp.Email == input_username.Text && emp.Password == input_password.Text);
+            var employee = context.Employees?.FirstOrDefault(emp => emp.Email == input_username.Text && emp.Password == input_password.Text);
 
-                if (employee != null)
+            if (employee != null)
+            {
+                if (employee.Name?.ToString() != "Admin")
                 {
                     recby = employee.Name;
                     this.Hide();
@@ -47,8 +48,13 @@ namespace Test
                 }
                 else
                 {
-                    MessageBox.Show("Please Try Again, Your Data is not Valid!");
+                    MessageBox.Show("Hahaha anda hanyalah Member");
                 }
+            }
+            else
+            {
+                MessageBox.Show("Please Try Again, Your Data is not Valid!");
+            }
         }
 
         private void btn_reset_Click(object sender, EventArgs e)

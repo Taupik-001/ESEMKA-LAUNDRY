@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Test.Service_Program;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -37,25 +36,17 @@ namespace Test.Form_Application
                 phoneNumber = phoneNumber.Replace(" ", "").Replace("-", "");
 
                 // Check if the phone number starts with a plus sign (+)
-                if (!phoneNumber.StartsWith("+"))
+                if (!phoneNumber.StartsWith("+") && phoneNumber.Skip(1).All(char.IsDigit))
                 {
-                    MessageBox.Show("Phone number must start with a plus sign (+).");
+                    MessageBox.Show("Please enter a valid phone number starting with '+'.");
                     isValid = false;
                 }
-
-                // Check if the remaining characters are numeric
-                string numericPart = phoneNumber.Substring(1);
-                if (!numericPart.All(char.IsDigit))
-                {
-                    MessageBox.Show("Phone number must contain only numeric characters.");
-                    isValid = false;
-                }
-
+                EsemkaContext context = new EsemkaContext();
                 // Check if the phone number is unique in the database
-                bool isUnique = Data_Access_Layer.IsPhoneNumberUnique("Customer", "PhoneNumber", phoneNumber);
-                if (!isUnique)
+                var isUnique = context.Customers?.FirstOrDefault(e => e.PhoneNumber == phoneNumber);
+                if (isUnique != null)
                 {
-                    MessageBox.Show("Phone number already exists in the database.");
+                    MessageBox.Show("Phone number already exists.");
                     isValid = false;
                 }
             }
@@ -67,8 +58,17 @@ namespace Test.Form_Application
         {
             if (ValidateInput())
             {
-                MessageBox.Show("Insert Completed");
-                int InsertCustomer = Data_Access_Layer.InsertDataCustomer("Customer", inp_name.Text, inp_phone.Text, inp_address.Text);
+                EsemkaContext context = new EsemkaContext();
+                var InsertData = new Customer
+                {
+                    Name = inp_name.Text,
+                    PhoneNumber = inp_phone.Text,
+                    Address = inp_address.Text
+                };
+                context.Customers?.Add(InsertData);
+                context.SaveChanges();
+
+                MessageBox.Show($"Insert for Customer with ID : {InsertData.Id} Completed");
                 this.Close();
             }
         }

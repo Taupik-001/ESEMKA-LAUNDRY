@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Test.Service_Program;
 using System.Data;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -12,10 +11,10 @@ namespace Test.Form_Application
 {
     public partial class Employee_Form : Base_Form
     {
+        private bool isInsert = false;
         private EsemkaContext contextEmp = new EsemkaContext();
         private bool isRowSelected = false;
-        private bool isInsert = false;
-        private int selectedId;
+        private int selectedId { get; set; }
         public Employee_Form()
         {
             InitializeComponent();
@@ -149,13 +148,10 @@ namespace Test.Form_Application
                 textBox.Clear();
             }
         }
-        private void Manage_Employee_Load(object sender, EventArgs e)
+        private void DisplayToDataGridView()
         {
-            EnabledField(false);
-            EnabledField(true, false);
-
-            List<Employee>? employeeList = contextEmp.Employees?.Include(e => e.Job).ToList();
-            dtViewEmployee.DataSource = employeeList?.Select(e => new
+            List<Employee>? listEmployee = contextEmp.Employees?.Include(e => e.Job).ToList();
+            dtViewEmployee.DataSource = listEmployee?.Select(e => new
             {
                 e.Id,
                 e.Name,
@@ -166,6 +162,13 @@ namespace Test.Form_Application
                 NameJob = e.Job?.Name,
                 e.Salary
             }).ToList();
+        }
+        private void Manage_Employee_Load(object sender, EventArgs e)
+        {
+            EnabledField(false);
+            EnabledField(true, false);
+
+            DisplayToDataGridView();
 
             // Define columns
             dtViewEmployee.Columns["Id"].HeaderText = "Employee Id";
@@ -185,6 +188,9 @@ namespace Test.Form_Application
             inp_combo.SelectedIndex = 0;
 
             inp_combo.DropDownStyle = ComboBoxStyle.DropDownList;
+            dtViewEmployee.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
+            dtViewEmployee.SelectionChanged += dtViewEmployee_SelectionChanged; // Attach SelectionChanged event handler
+            dtViewEmployee.CellClick += dtViewEmployee_CellClick;
         }
         private void inp_search_TextChanged(object sender, EventArgs e)
         {
@@ -192,8 +198,7 @@ namespace Test.Form_Application
             string searchText = inp_search.Text.ToLower();
 
             var filteredData = contextEmp.Employees?
-                .Where(e => e.Id.ToString().Contains(searchText) ||
-                    (e.Name != null && e.Name.ToLower().Contains(searchText)) ||
+                .Where(e => (e.Name != null && e.Name.ToLower().Contains(searchText)) ||
                     (e.PhoneNumber != null && e.PhoneNumber.ToLower().Contains(searchText)) ||
                     (e.Email != null && e.Email.ToLower().Contains(searchText)))
                 .Select(e => new
@@ -225,8 +230,6 @@ namespace Test.Form_Application
                 selectedId = Convert.ToInt32(row.Cells["Id"].Value);
 
                 // Do something with the data ID...
-                DataTable? dt = Data_Access_Layer.SelectDataWhere("Employee", selectedId);
-
                 var EmployeesList = contextEmp.Employees?.FirstOrDefault(e => e.Id == selectedId);
 
                 if (EmployeesList != null)
@@ -244,11 +247,9 @@ namespace Test.Form_Application
                     inp_numeric.Value = Math.Floor(EmployeesList.Salary);
                 }
             }
-
-
         }
 
-        private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void dataGridView1_ColumnHeaderMouseClick(object? sender, DataGridViewCellMouseEventArgs e)
         {
             // Cancel the sorting operation
             dtViewEmployee.Columns[e.ColumnIndex].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -283,38 +284,26 @@ namespace Test.Form_Application
                 return;
             }
 
-            DialogResult result = MessageBox.Show("Would you like to delete this data?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("Would you like to delete this data Id : " + selectedId + "?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
                 // Perform the delete logic...
-                int idEmployee = Convert.ToInt32(inp_id.Text);
-                var rowEffect = contextEmp.Employees?.Find(idEmployee);
+                var rowEffect = contextEmp.Employees?.Find(selectedId);
                 // Close the MessageBox
                 if (rowEffect != null)
                 {
-                    MessageBox.Show($"Delete completed for employee with ID {idEmployee}!", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Delete completed for employee with ID {selectedId}!", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     // Perform delete operation and check its success
                     contextEmp.Employees?.Remove(rowEffect);
                     contextEmp.SaveChanges();
 
                     // Update the DataGridView
-                    List<Employee>? listEmp = contextEmp.Employees?.Include(e => e.Job).ToList();
-                    dtViewEmployee.DataSource = listEmp?.Select(e => new
-                    {
-                        e.Id,
-                        e.Name,
-                        e.Email,
-                        e.PhoneNumber,
-                        e.Address,
-                        e.DateOfBirth,
-                        NameJob = e.Job?.Name,
-                        e.Salary
-                    }).ToList();
+                    DisplayToDataGridView();
                 }
                 else
                 {
-                    MessageBox.Show($"Delete failed for employee with ID {idEmployee}.", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Delete failed for employee with ID {selectedId}.", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
             }
@@ -343,7 +332,7 @@ namespace Test.Form_Application
                 {
                     if (isIdUnique != null)
                     {
-                        MessageBox.Show($"Please use Update button the Data already Exist for that Id {id}");
+                        MessageBox.Show($"Unable to insert data. ID {id} already exists. If you want to update data, please use the Update button.");
                         return;
                     }
 
@@ -361,32 +350,17 @@ namespace Test.Form_Application
                     };
                     contextEmp.Employees?.Add(insertData);
                     contextEmp.SaveChanges();
-
-                    List<Employee>? employeeList = contextEmp.Employees?.Include(e => e.Job).ToList();
-                    dtViewEmployee.DataSource = employeeList?.Select(e => new
-                    {
-                        e.Id,
-                        e.Name,
-                        e.Email,
-                        e.PhoneNumber,
-                        e.Address,
-                        e.DateOfBirth,
-                        NameJob = e.Job?.Name,
-                        e.Salary
-                    }).ToList();
-                    MessageBox.Show($"Success insert data for Id! {insertData.Id}");
-                    EnabledField(false);
-                    EnabledField(true, false);
+                    DisplayToDataGridView();
+                    MessageBox.Show($"Success insert data for ID : {insertData.Id}");
                 }
                 else
                 {
                     if (isIdUnique == null)
                     {
-                        MessageBox.Show($"Please use Insert button to insert that data Id {id}");
+                        MessageBox.Show($"Unable to update data. ID {id} was not found. If you want to insert data, please use the Insert button.");
                         return;
                     }
                     // Update data in the database
-                    MessageBox.Show($"Success Update!");
                     isIdUnique.Name = name;
                     isIdUnique.Email = email;
                     isIdUnique.Password = password;
@@ -396,23 +370,15 @@ namespace Test.Form_Application
                     isIdUnique.IdJob = Selectedcombo;
                     isIdUnique.Salary = numericValue;
                     contextEmp.SaveChanges();
-                    List<Employee>? listEmp = contextEmp.Employees?.Include(e => e.Job).ToList();
-                    dtViewEmployee.DataSource = listEmp?.Select(e => new
-                    {
-                        e.Id,
-                        e.Name,
-                        e.Email,
-                        e.PhoneNumber,
-                        e.Address,
-                        e.DateOfBirth,
-                        NameJob = e.Job?.Name,
-                        e.Salary
-                    }).ToList();
-                    EnabledField(false);
-                    EnabledField(true, false);
+
+                    DisplayToDataGridView();
+                    MessageBox.Show($"Success Update data for ID : {id}");
                 }
+                EnabledField(false);
+                EnabledField(true, false);
             }
         }
+
         private void btn_cancel_Click(object sender, EventArgs e)
         {
             EnabledField(false);

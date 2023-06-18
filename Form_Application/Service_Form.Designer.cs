@@ -89,13 +89,15 @@
             // 
             // dtViewService
             // 
+            dtViewService.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtViewService.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dtViewService.RowHeadersVisible = false;
+            dtViewService.AllowUserToAddRows = false;
             dtViewService.Location = new Point(183, 116);
             dtViewService.Margin = new Padding(4, 3, 4, 3);
             dtViewService.Name = "dtViewService";
             dtViewService.Size = new Size(737, 173);
             dtViewService.TabIndex = 3;
-            dtViewService.CellClick += dtViewService_CellClick;
-            dtViewService.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
             // 
             // lbl_id
             // 

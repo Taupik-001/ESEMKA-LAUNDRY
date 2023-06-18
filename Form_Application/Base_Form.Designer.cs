@@ -35,7 +35,6 @@ namespace Test
             display_time = new Label();
             display_username = new Label();
             btn_logout = new Button();
-            button8 = new Button();
             button7 = new Button();
             button6 = new Button();
             button5 = new Button();
@@ -116,18 +115,6 @@ namespace Test
             btn_logout.Text = "Logout";
             btn_logout.UseVisualStyleBackColor = true;
             btn_logout.Click += btn_logout_Click;
-            // 
-            // button8
-            // 
-            button8.AutoSize = true;
-            button8.Location = new Point(4, 213);
-            button8.Margin = new Padding(4, 3, 4, 3);
-            button8.Name = "button8";
-            button8.Size = new Size(122, 29);
-            button8.TabIndex = 5;
-            button8.Text = "History Transaction";
-            button8.UseVisualStyleBackColor = true;
-            button8.Click += button8_Click;
             // 
             // button7
             // 
@@ -210,7 +197,6 @@ namespace Test
             flowLayoutPanel1.Controls.Add(button5);
             flowLayoutPanel1.Controls.Add(button6);
             flowLayoutPanel1.Controls.Add(button7);
-            flowLayoutPanel1.Controls.Add(button8);
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.Location = new Point(0, 58);
             flowLayoutPanel1.Margin = new Padding(4, 3, 4, 3);
@@ -258,7 +244,6 @@ namespace Test
         private Label display_time;
         private Label display_username;
         private Button btn_logout;
-        private Button button8;
         private Button button7;
         private Button button6;
         private Button button5;

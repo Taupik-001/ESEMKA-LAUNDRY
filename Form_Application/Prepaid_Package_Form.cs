@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Test.Service_Program;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -48,7 +47,7 @@ namespace Test.Form_Application
 
         private void Prepaid_Package_Form_Load(object sender, EventArgs e)
         {
-            DataTable? dt = Data_Access_Layer.JoinData1("PrepaidPackage", "Customer", "Package");
+            DataTable? dt = new DataTable();
             dtViewPrepaidPackage.AutoGenerateColumns = false;
             dtViewPrepaidPackage.DataSource = dt;
 

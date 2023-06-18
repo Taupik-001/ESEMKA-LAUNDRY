@@ -4,7 +4,7 @@ namespace Test
 {
     public class EsemkaContext : DbContext
     {
-        public DbSet<Category>? Categories { get; set; }
+        public DbSet<Category>? Categorys { get; set; }
         public DbSet<Customer>? Customers { get; set; }
         public DbSet<DetailDeposit>? DetailDeposits { get; set; }
         public DbSet<Employee>? Employees { get; set; }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Test.Service_Program;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -22,7 +21,7 @@ namespace Test.Form_Application
 
         private void View_Transaction_Form_Load(object sender, EventArgs e)
         {
-            DataTable? dtD = Data_Access_Layer.JoinData3("DetailDeposit", "Service", "PrepaidPackage");
+            DataTable? dtD = new DataTable();
             dtDetail.AutoGenerateColumns = false;
             dtDetail.DataSource = dtD;
             //dtDetail.DataSource = dtD;
@@ -42,7 +41,7 @@ namespace Test.Form_Application
             // // Set the button column to appear in the last cell
             // dtDetail.Columns[dtDetail.Columns.Count - 1].DisplayIndex = dtDetail.Columns.Count - 1;
 
-            DataTable? dtHead = Data_Access_Layer.JoinData2("HeaderDeposit", "Customer", "Employee");
+            DataTable? dtHead = new DataTable();
             dtHeader.AutoGenerateColumns = false;
             dtHeader.DataSource = dtHead;
             dtHeader.Columns.Add("Id", "Id Package");
