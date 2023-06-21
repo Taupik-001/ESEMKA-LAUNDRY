@@ -19,7 +19,7 @@ namespace Test
         private void Base_Form_Load(object sender, EventArgs e)
         {
             timer1.Start();
-            display_time.Text = DateTime.Now.ToString();
+            display_time.Text = DateTime.Now.ToString("dd MMMM yyyy HH:mm:ss");
             display_username.Text = "Hello, " + Login_Form.recby;
             this.Hide();
         }
@@ -35,7 +35,7 @@ namespace Test
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            display_time.Text = DateTime.Now.ToString();
+            display_time.Text = DateTime.Now.ToString("dd MMMM yyyy HH:mm:ss");
             timer1.Start();
         }
 
@@ -65,6 +65,8 @@ namespace Test
             this.Hide();
             Form_Application.Employee_Form manage_employee = new Form_Application.Employee_Form();
             manage_employee.Show();
+
+            // this.WindowState = FormWindowState.Minimized;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -72,6 +74,9 @@ namespace Test
             this.Hide();
             Form_Application.Service_Form manage_service = new Form_Application.Service_Form();
             manage_service.Show();
+            // manage_service.WindowState = FormWindowState.Normal;
+            // this.WindowState = FormWindowState.Minimized;
+
         }
 
         private void button4_Click(object sender, EventArgs e)

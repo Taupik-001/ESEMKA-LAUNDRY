@@ -57,6 +57,20 @@ namespace Test.Form_Application
                 e.Price
             }).ToList();
         }
+        public static void ComBo(ComboBox data)
+        {
+            EsemkaContext context = new EsemkaContext();
+            Service DefaultService = new Service { Id = 0, Name = "" };
+            List<Service>? serviceList = context.Services?.ToList();
+            serviceList?.Insert(0, DefaultService);
+
+            data.DisplayMember = "Name";
+            data.ValueMember = "Id";
+            data.DataSource = serviceList;
+            data.SelectedIndex = 0;
+
+            data.DropDownStyle = ComboBoxStyle.DropDownList;
+        }
         private void Package_Form_Load(object sender, EventArgs e)
         {
             enableField(false);
@@ -68,17 +82,7 @@ namespace Test.Form_Application
             dataViewPackage.Columns["ServiceName"].HeaderText = "Service Name";
             dataViewPackage.Columns["TotalUnit"].HeaderText = "Total Unit";
 
-            Service DefaultService = new Service { Id = 0, Name = "" };
-
-            List<Service>? serviceList = context.Services?.ToList();
-            serviceList?.Insert(0, DefaultService);
-
-            serviceCom.DisplayMember = "Name";
-            serviceCom.ValueMember = "Id";
-            serviceCom.DataSource = serviceList;
-            serviceCom.SelectedIndex = 0;
-
-            serviceCom.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComBo(serviceCom);
 
             dataViewPackage.CellClick += dataGridView1_CellClick;
             dataViewPackage.SelectionChanged += dataGridView1_SelectionChanged;

@@ -77,7 +77,7 @@
             label3.Name = "label3";
             label3.Size = new Size(38, 15);
             label3.TabIndex = 13;
-            label3.Text = "label3";
+            label3.Text = "Package ID";
             // 
             // label4
             // 
@@ -86,7 +86,7 @@
             label4.Name = "label4";
             label4.Size = new Size(38, 15);
             label4.TabIndex = 14;
-            label4.Text = "label4";
+            label4.Text = "Service";
             // 
             // label5
             // 
@@ -95,7 +95,7 @@
             label5.Name = "label5";
             label5.Size = new Size(38, 15);
             label5.TabIndex = 15;
-            label5.Text = "label5";
+            label5.Text = "Total Unit";
             // 
             // label6
             // 
@@ -104,7 +104,7 @@
             label6.Name = "label6";
             label6.Size = new Size(38, 15);
             label6.TabIndex = 16;
-            label6.Text = "label6";
+            label6.Text = "Price";
             // 
             // dataViewPackage
             // 
