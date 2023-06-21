@@ -16,10 +16,7 @@ namespace Test.Form_Application
 
         }
 
-<<<<<<< HEAD
-=======
         private EsemkaContext context = new EsemkaContext();
->>>>>>> 3c406e9311a38e4fe68d3e5dcc7be420a85b72ab
 
         private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -42,136 +39,24 @@ namespace Test.Form_Application
         private void Transaction_Deposit_Form_Load(object sender, EventArgs e)
         {
             Package_Form.ComBo(inp_service);
-<<<<<<< HEAD
-=======
             listBox1.Visible = false;
->>>>>>> 3c406e9311a38e4fe68d3e5dcc7be420a85b72ab
 
             dtViewService.CellContentClick += dtViewService_CellContentClick;
 
             Customer defaultCustomer = new Customer { Id = 0, PhoneNumber = "" };
-<<<<<<< HEAD
-            List<Customer>? listCustomer = context.Customers?.ToList();
-
-            listCustomer?.Insert(0, defaultCustomer);
-=======
             List<Customer> listCustomer = context.Customers.ToList();
 
             listCustomer.Insert(0, defaultCustomer);
->>>>>>> 3c406e9311a38e4fe68d3e5dcc7be420a85b72ab
 
             inp_customer.DisplayMember = "PhoneNumber";
             inp_customer.ValueMember = "Id";
             inp_customer.DataSource = listCustomer;
-<<<<<<< HEAD
-=======
             inp_customer.SelectedIndex = 0;
->>>>>>> 3c406e9311a38e4fe68d3e5dcc7be420a85b72ab
 
             // Set up ComboBox properties
             inp_customer.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             inp_customer.AutoCompleteSource = AutoCompleteSource.ListItems;
 
-<<<<<<< HEAD
-            //Disable the vertical scrollbar
-            inp_customer.IntegralHeight = false;
-            inp_customer.MaxDropDownItems = 5; // Set the desired number of items to display
-
-            //Adjust the height of the dropdown to fit the items
-            inp_customer.DropDownHeight = inp_customer.ItemHeight * (inp_customer.MaxDropDownItems + 1);
-
-
-            //inp_customer.DropDownStyle = ComboBoxStyle.Simple;
-
-            dtViewService.CellClick += DtViewService_CellClick;
-            dtViewService.SelectionChanged += DtViewService_SelectionChanged;
-
-        }
-
-        private void DtViewService_SelectionChanged(object? sender, EventArgs e)
-        {
-            isRowSelected = dtViewService.SelectedRows.Count > 0;
-        }
-
-        private int days = 24;
-
-        private string dateEst { get; set; }
-        private int IdService { get; set; }
-        private int PriceUnit { get; set; }
-        private decimal TotalUnit { get; set; }
-        private int SubTotal { get; set; }
-
-        private void DtViewService_CellClick(object? sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                DataGridViewRow row = dtViewService.Rows[e.RowIndex];
-                string Service = row.Cells[0].Value.ToString();
-                PriceUnit = Convert.ToInt32(row.Cells[2].Value);
-                TotalUnit = Convert.ToDecimal(row.Cells[3].Value);
-                SubTotal = Convert.ToInt32(row.Cells[4].Value);
-                var serviceName = context.Services.FirstOrDefault(e => e.Name == Service);
-                if (serviceName != null)
-                {
-                    IdService = serviceName.Id;
-                }
-                else
-                {
-                    MessageBox.Show("Data not found");
-                }
-
-                MessageBox.Show($"Cell Clicked {IdService}, {PriceUnit}, {TotalUnit}, {SubTotal}");
-            }
-        }
-        private void btn_submit_Click(object sender, EventArgs e)
-        {
-            var serviceCategory = context.Services.FirstOrDefault(e => e.Id == inp_service.SelectedIndex);
-
-            int totalHour = serviceCategory.EstimationDuration;
-
-            if (!isRowSelected)
-            {
-                MessageBox.Show("Please select a row in datagridView to Insert data");
-                return;
-            }
-
-            if (inp_customer.SelectedIndex == 0)
-            {
-                MessageBox.Show("Please select customer data");
-                return;
-            }
-            else
-            {
-
-            }
-
-            if (serviceCategory.IdCategory == 1)
-            {
-                MessageBox.Show($"You are currently in data {serviceCategory.IdCategory}");
-
-                dateEst = serviceCategory.EstimationDuration.ToString();
-            }
-            else
-            {
-                MessageBox.Show($"You are currently in data {serviceCategory.IdCategory}");
-                dateEst = serviceCategory.EstimationDuration.ToString();
-            }
-
-            HeaderDeposit insertHeader = new HeaderDeposit
-            {
-                IdCustomer = inp_customer.SelectedIndex,
-                IdEmployee = Login_Form.IdEmployee,
-                TransactionDatetime = DateTime.Now,
-                CompleteEstimationDatetime = DateTime.Now
-            };
-
-            int hour = totalHour % days;
-            int day = totalHour / days;
-            string output = $"{day} days 00:{hour}:00";
-            label2.Text = output;
-        }
-
-=======
             // Remove the dropdown arrow and disable the dropdown list
             inp_customer.DropDownStyle = ComboBoxStyle.Simple;
 
@@ -193,7 +78,6 @@ namespace Test.Form_Application
                 address_display.Text = selectedCustomer.Address;
             }
         }
->>>>>>> 3c406e9311a38e4fe68d3e5dcc7be420a85b72ab
         private void dtViewService_CellContentClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == dtViewService.Columns["Action"].Index && e.RowIndex >= 0)
@@ -214,8 +98,6 @@ namespace Test.Form_Application
 
         private void inp_phone_number_TextChanged(object sender, EventArgs e)
         {
-<<<<<<< HEAD
-=======
 
         }
         private void inp_customer_TextChanged(object sender, EventArgs e)
@@ -277,7 +159,6 @@ namespace Test.Form_Application
 
                 dt.Rows.Add(newRow); // Add the new row to the DataTable
             }
->>>>>>> 3c406e9311a38e4fe68d3e5dcc7be420a85b72ab
 
         }
 
