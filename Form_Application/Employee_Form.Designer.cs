@@ -94,20 +94,17 @@
             // 
             // dtViewEmployee
             // 
+            dtViewEmployee.AllowUserToAddRows = false;
+            dtViewEmployee.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtViewEmployee.ColumnHeadersHeight = 50;
             dtViewEmployee.Location = new Point(183, 116);
             dtViewEmployee.Margin = new Padding(4, 3, 4, 3);
             dtViewEmployee.Name = "dtViewEmployee";
+            dtViewEmployee.RowHeadersVisible = false;
+            dtViewEmployee.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dtViewEmployee.Size = new Size(638, 172);
             dtViewEmployee.TabIndex = 3;
-
-
-            dtViewEmployee.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dtViewEmployee.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dtViewEmployee.RowHeadersVisible = false;
-            dtViewEmployee.AllowUserToAddRows = false;
-            // Set the height of the header row
-            dtViewEmployee.ColumnHeadersHeight = 50; // Set the desired height in pixels
-
+            dtViewEmployee.CellContentClick += dtViewEmployee_CellContentClick;
             // 
             // lbl_id
             // 

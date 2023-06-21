@@ -29,12 +29,14 @@
         private void InitializeComponent()
         {
             lbl_title = new Label();
+            textBox1 = new TextBox();
             dtViewService = new DataGridView();
             lbl_name = new Label();
             lbl_email = new Label();
             lbl_address = new Label();
             lbl_date = new Label();
             inp_service = new ComboBox();
+            inp_customer = new ComboBox();
             inp_unit = new NumericUpDown();
             add_customer = new LinkLabel();
             panel1 = new Panel();
@@ -43,15 +45,16 @@
             label5 = new Label();
             label4 = new Label();
             inp_phone_number = new TextBox();
+            lbl_totalun = new Label();
             label3 = new Label();
             label2 = new Label();
             checkBox1 = new CheckBox();
             btn_add = new Button();
+            btn_submit = new Button();
             lbl_total = new Label();
             lbl_estimation = new Label();
             ((System.ComponentModel.ISupportInitialize)dtViewService).BeginInit();
             ((System.ComponentModel.ISupportInitialize)inp_unit).BeginInit();
-            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // lbl_title
@@ -65,11 +68,20 @@
             lbl_title.TabIndex = 0;
             lbl_title.Text = "Transaction Deposit";
             // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(326, 235);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(150, 23);
+            textBox1.TabIndex = 2;
+            // 
             // dtViewService
             // 
+            dtViewService.AllowUserToAddRows = false;
             dtViewService.AllowUserToResizeColumns = false;
             dtViewService.AllowUserToResizeRows = false;
             dtViewService.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtViewService.ColumnHeadersHeight = 50;
             dtViewService.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dtViewService.EditMode = DataGridViewEditMode.EditProgrammatically;
             dtViewService.Location = new Point(479, 167);
@@ -77,9 +89,10 @@
             dtViewService.Name = "dtViewService";
             dtViewService.ReadOnly = true;
             dtViewService.RowHeadersVisible = false;
-            dtViewService.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dtViewService.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dtViewService.Size = new Size(384, 223);
             dtViewService.TabIndex = 3;
+            dtViewService.CellContentClick += dtViewService_CellContentClick_1;
             // 
             // lbl_name
             // 
@@ -94,7 +107,7 @@
             // lbl_email
             // 
             lbl_email.AutoSize = true;
-            lbl_email.Location = new Point(215, 250);
+            lbl_email.Location = new Point(215, 238);
             lbl_email.Margin = new Padding(4, 0, 4, 0);
             lbl_email.Name = "lbl_email";
             lbl_email.Size = new Size(78, 15);
@@ -130,10 +143,19 @@
             inp_service.Size = new Size(140, 23);
             inp_service.TabIndex = 2;
             // 
+            // inp_customer
+            // 
+            inp_customer.FormattingEnabled = true;
+            inp_customer.Location = new Point(290, 110);
+            inp_customer.Name = "inp_customer";
+            inp_customer.Size = new Size(140, 23);
+            inp_customer.TabIndex = 0;
+            inp_customer.SelectedIndexChanged += inp_customer_SelectedIndexChanged;
+            // 
             // inp_unit
             // 
             inp_unit.DecimalPlaces = 1;
-            inp_unit.Location = new Point(326, 250);
+            inp_unit.Location = new Point(326, 265);
             inp_unit.Margin = new Padding(4, 3, 4, 3);
             inp_unit.Maximum = new decimal(new int[] { 10000000, 0, 0, 0 });
             inp_unit.Name = "inp_unit";
@@ -145,34 +167,27 @@
             add_customer.AutoSize = true;
             add_customer.Font = new Font("Arial", 10F, FontStyle.Underline, GraphicsUnit.Point);
             add_customer.ForeColor = Color.Blue;
-            add_customer.Location = new Point(108, 42);
+            add_customer.Location = new Point(290, 137);
             add_customer.Margin = new Padding(4, 0, 4, 0);
             add_customer.Name = "add_customer";
             add_customer.Size = new Size(151, 16);
-            add_customer.TabIndex = 11;
+            add_customer.TabIndex = 10;
             add_customer.TabStop = true;
             add_customer.Text = "Not Found? Add New +";
             add_customer.LinkClicked += LinkLabel_LinkClicked;
             // 
             // panel1
             // 
-            panel1.Controls.Add(address_display);
-            panel1.Controls.Add(name_display);
-            panel1.Controls.Add(label5);
-            panel1.Controls.Add(label4);
-            panel1.Controls.Add(inp_phone_number);
-            panel1.Controls.Add(label3);
-            panel1.Controls.Add(label2);
-            panel1.Controls.Add(add_customer);
-            panel1.Location = new Point(182, 95);
+            panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Location = new Point(181, 96);
             panel1.Name = "panel1";
             panel1.Size = new Size(682, 65);
-            panel1.TabIndex = 12;
+            panel1.TabIndex = 1;
             // 
             // address_display
             // 
             address_display.AutoSize = true;
-            address_display.Location = new Point(372, 42);
+            address_display.Location = new Point(554, 137);
             address_display.Name = "address_display";
             address_display.Size = new Size(57, 15);
             address_display.TabIndex = 15;
@@ -181,7 +196,7 @@
             // name_display
             // 
             name_display.AutoSize = true;
-            name_display.Location = new Point(372, 11);
+            name_display.Location = new Point(554, 106);
             name_display.Name = "name_display";
             name_display.Size = new Size(47, 15);
             name_display.TabIndex = 14;
@@ -190,7 +205,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(297, 42);
+            label5.Location = new Point(479, 137);
             label5.Name = "label5";
             label5.Size = new Size(49, 15);
             label5.TabIndex = 13;
@@ -199,7 +214,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(297, 11);
+            label4.Location = new Point(479, 106);
             label4.Name = "label4";
             label4.Size = new Size(39, 15);
             label4.TabIndex = 12;
@@ -207,15 +222,26 @@
             // 
             // inp_phone_number
             // 
-            inp_phone_number.Location = new Point(108, 15);
+            inp_phone_number.Location = new Point(32736, 110);
             inp_phone_number.Name = "inp_phone_number";
-            inp_phone_number.Size = new Size(100, 23);
+            inp_phone_number.Size = new Size(150, 23);
             inp_phone_number.TabIndex = 2;
+            inp_phone_number.TextChanged += inp_phone_number_TextChanged;
+            // 
+            // lbl_totalun
+            // 
+            lbl_totalun.AutoSize = true;
+            lbl_totalun.Location = new Point(215, 267);
+            lbl_totalun.Margin = new Padding(4, 0, 4, 0);
+            lbl_totalun.Name = "lbl_totalun";
+            lbl_totalun.Size = new Size(57, 15);
+            lbl_totalun.TabIndex = 6;
+            lbl_totalun.Text = "Total Unit";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(14, 23);
+            label3.Location = new Point(196, 118);
             label3.Name = "label3";
             label3.Size = new Size(88, 15);
             label3.TabIndex = 1;
@@ -224,7 +250,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(3, 0);
+            label2.Location = new Point(185, 95);
             label2.Name = "label2";
             label2.Size = new Size(59, 15);
             label2.TabIndex = 0;
@@ -233,7 +259,7 @@
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(326, 302);
+            checkBox1.Location = new Point(326, 294);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(135, 19);
             checkBox1.TabIndex = 13;
@@ -242,12 +268,23 @@
             // 
             // btn_add
             // 
-            btn_add.Location = new Point(326, 346);
+            btn_add.Location = new Point(391, 329);
             btn_add.Name = "btn_add";
             btn_add.Size = new Size(75, 23);
             btn_add.TabIndex = 14;
             btn_add.Text = "Add";
             btn_add.UseVisualStyleBackColor = true;
+            btn_add.Click += btn_add_Click;
+            // 
+            // btn_submit
+            // 
+            btn_submit.Location = new Point(730, 475);
+            btn_submit.Name = "btn_submit";
+            btn_submit.Size = new Size(75, 23);
+            btn_submit.TabIndex = 14;
+            btn_submit.Text = "Submit";
+            btn_submit.UseVisualStyleBackColor = true;
+            btn_submit.Click += btn_submit_Click;
             // 
             // lbl_total
             // 
@@ -272,40 +309,62 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(876, 519);
-            Controls.Add(lbl_estimation);
-            Controls.Add(lbl_total);
-            Controls.Add(btn_add);
-            Controls.Add(checkBox1);
-            Controls.Add(panel1);
-            Controls.Add(lbl_title);
-            Controls.Add(dtViewService);
-            Controls.Add(lbl_name);
-            Controls.Add(lbl_email);
-            Controls.Add(lbl_address);
-            Controls.Add(lbl_date);
-            Controls.Add(inp_service);
+            Controls.Add(label2);
+            Controls.Add(label3);
+            Controls.Add(inp_phone_number);
+            Controls.Add(label4);
+            Controls.Add(label5);
+            Controls.Add(name_display);
+            Controls.Add(address_display);
             Controls.Add(inp_unit);
+            Controls.Add(inp_customer);
+            Controls.Add(inp_service);
+            Controls.Add(lbl_date);
+            Controls.Add(lbl_address);
+            Controls.Add(lbl_email);
+            Controls.Add(lbl_name);
+            Controls.Add(dtViewService);
+            Controls.Add(lbl_title);
+            Controls.Add(checkBox1);
+            Controls.Add(btn_submit);
+            Controls.Add(btn_add);
+            Controls.Add(add_customer);
+            Controls.Add(lbl_total);
+            Controls.Add(lbl_estimation);
+            Controls.Add(lbl_totalun);
+            Controls.Add(textBox1);
+            Controls.Add(panel1);
             Margin = new Padding(5, 3, 5, 3);
             Name = "Transaction_Deposit_Form";
             Text = "Manage Employee";
             Load += Transaction_Deposit_Form_Load;
-            Controls.SetChildIndex(inp_unit, 0);
-            Controls.SetChildIndex(inp_service, 0);
-            Controls.SetChildIndex(lbl_date, 0);
-            Controls.SetChildIndex(lbl_address, 0);
-            Controls.SetChildIndex(lbl_email, 0);
-            Controls.SetChildIndex(lbl_name, 0);
-            Controls.SetChildIndex(dtViewService, 0);
-            Controls.SetChildIndex(lbl_title, 0);
             Controls.SetChildIndex(panel1, 0);
-            Controls.SetChildIndex(checkBox1, 0);
-            Controls.SetChildIndex(btn_add, 0);
-            Controls.SetChildIndex(lbl_total, 0);
+            Controls.SetChildIndex(textBox1, 0);
+            Controls.SetChildIndex(lbl_totalun, 0);
             Controls.SetChildIndex(lbl_estimation, 0);
+            Controls.SetChildIndex(lbl_total, 0);
+            Controls.SetChildIndex(add_customer, 0);
+            Controls.SetChildIndex(btn_add, 0);
+            Controls.SetChildIndex(btn_submit, 0);
+            Controls.SetChildIndex(checkBox1, 0);
+            Controls.SetChildIndex(lbl_title, 0);
+            Controls.SetChildIndex(dtViewService, 0);
+            Controls.SetChildIndex(lbl_name, 0);
+            Controls.SetChildIndex(lbl_email, 0);
+            Controls.SetChildIndex(lbl_address, 0);
+            Controls.SetChildIndex(lbl_date, 0);
+            Controls.SetChildIndex(inp_service, 0);
+            Controls.SetChildIndex(inp_customer, 0);
+            Controls.SetChildIndex(inp_unit, 0);
+            Controls.SetChildIndex(address_display, 0);
+            Controls.SetChildIndex(name_display, 0);
+            Controls.SetChildIndex(label5, 0);
+            Controls.SetChildIndex(label4, 0);
+            Controls.SetChildIndex(inp_phone_number, 0);
+            Controls.SetChildIndex(label3, 0);
+            Controls.SetChildIndex(label2, 0);
             ((System.ComponentModel.ISupportInitialize)dtViewService).EndInit();
             ((System.ComponentModel.ISupportInitialize)inp_unit).EndInit();
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -325,9 +384,9 @@
         private DateTimePicker inp_date;
         private Label lbl_date;
         private ComboBox inp_service;
+        private ComboBox inp_customer;
         private NumericUpDown inp_unit;
         private LinkLabel add_customer;
-        private Button btn_insert;
         private Panel panel1;
         private TextBox inp_phone_number;
         private Label label3;
@@ -336,8 +395,11 @@
         private Label name_display;
         private Label label5;
         private Label label4;
+        private Label lbl_totalun;
         private CheckBox checkBox1;
         private Button btn_add;
+        private Button btn_submit;
+        private TextBox textBox1;
         private Label lbl_total;
         private Label lbl_estimation;
     }

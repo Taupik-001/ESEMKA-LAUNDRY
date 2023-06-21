@@ -12,7 +12,7 @@ namespace Test.Form_Application
     public partial class Employee_Form : Base_Form
     {
         private bool isInsert = false;
-        private EsemkaContext contextEmp = new EsemkaContext();
+        private EsemkaContext context = new EsemkaContext();
         private bool isRowSelected = false;
         private int selectedId { get; set; }
         public Employee_Form()
@@ -150,7 +150,7 @@ namespace Test.Form_Application
         }
         private void DisplayToDataGridView()
         {
-            List<Employee>? listEmployee = contextEmp.Employees?.Include(e => e.Job).ToList();
+            List<Employee>? listEmployee = context.Employees?.Include(e => e.Job).ToList();
             dtViewEmployee.DataSource = listEmployee?.Select(e => new
             {
                 e.Id,
@@ -179,7 +179,7 @@ namespace Test.Form_Application
             // Combo box display name job
             Job defaultJob = new Job { Id = 0, Name = "" };
 
-            List<Job>? jobList = contextEmp.Jobs?.ToList();
+            List<Job>? jobList = context.Jobs?.ToList();
             jobList?.Insert(0, defaultJob);
 
             inp_combo.DisplayMember = "Name";
@@ -197,7 +197,7 @@ namespace Test.Form_Application
             // Make textbox to Input Search String lower
             string searchText = inp_search.Text.ToLower();
 
-            var filteredData = contextEmp.Employees?
+            var filteredData = context.Employees?
                 .Where(e => (e.Name != null && e.Name.ToLower().Contains(searchText)) ||
                     (e.PhoneNumber != null && e.PhoneNumber.ToLower().Contains(searchText)) ||
                     (e.Email != null && e.Email.ToLower().Contains(searchText)))
@@ -230,7 +230,7 @@ namespace Test.Form_Application
                 selectedId = Convert.ToInt32(row.Cells["Id"].Value);
 
                 // Do something with the data ID...
-                var EmployeesList = contextEmp.Employees?.FirstOrDefault(e => e.Id == selectedId);
+                var EmployeesList = context.Employees?.FirstOrDefault(e => e.Id == selectedId);
 
                 if (EmployeesList != null)
                 {
@@ -257,6 +257,7 @@ namespace Test.Form_Application
 
         private void btn_insert_Click(object sender, EventArgs e)
         {
+
             ClearField();
             EnabledField(true);
             EnabledField(false, true);
@@ -289,14 +290,14 @@ namespace Test.Form_Application
             if (result == DialogResult.Yes)
             {
                 // Perform the delete logic...
-                var rowEffect = contextEmp.Employees?.Find(selectedId);
+                var rowEffect = context.Employees?.Find(selectedId);
                 // Close the MessageBox
                 if (rowEffect != null)
                 {
                     MessageBox.Show($"Delete completed for employee with ID {selectedId}!", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     // Perform delete operation and check its success
-                    contextEmp.Employees?.Remove(rowEffect);
-                    contextEmp.SaveChanges();
+                    context.Employees?.Remove(rowEffect);
+                    context.SaveChanges();
 
                     // Update the DataGridView
                     DisplayToDataGridView();
@@ -316,7 +317,7 @@ namespace Test.Form_Application
                 int id = Convert.ToInt32(inp_id.Text);
 
                 // Check if the ID exists in the database
-                var isIdUnique = contextEmp.Employees?.Find(id);
+                var isIdUnique = context.Employees?.Find(id);
 
                 string name = inp_name.Text;
                 string email = inp_email.Text;
@@ -348,8 +349,8 @@ namespace Test.Form_Application
                         IdJob = Selectedcombo,
                         Salary = numericValue
                     };
-                    contextEmp.Employees?.Add(insertData);
-                    contextEmp.SaveChanges();
+                    context.Employees?.Add(insertData);
+                    context.SaveChanges();
                     DisplayToDataGridView();
                     MessageBox.Show($"Success insert data for ID : {insertData.Id}");
                 }
@@ -369,7 +370,7 @@ namespace Test.Form_Application
                     isIdUnique.DateOfBirth = selectedDate;
                     isIdUnique.IdJob = Selectedcombo;
                     isIdUnique.Salary = numericValue;
-                    contextEmp.SaveChanges();
+                    context.SaveChanges();
 
                     DisplayToDataGridView();
                     MessageBox.Show($"Success Update data for ID : {id}");
@@ -391,6 +392,11 @@ namespace Test.Form_Application
         }
         private void inp_search_KeyPress(object sender, KeyPressEventArgs e)
         {
+        }
+
+        private void dtViewEmployee_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

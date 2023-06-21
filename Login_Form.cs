@@ -1,17 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Data.SqlClient;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using System.Collections;
-using System.Xml;
-
 namespace Test
 {
     public partial class Login_Form : Form
@@ -22,6 +8,7 @@ namespace Test
         }
         private EsemkaContext context = new EsemkaContext();
         public static string? recby { get; set; }
+        public static int IdEmployee { get; set; }
         public static string logout
         {
             get { recby = null; return string.Empty; }
@@ -42,6 +29,7 @@ namespace Test
                 if (employee.Name?.ToString() != "Admin")
                 {
                     recby = employee.Name;
+                    IdEmployee = employee.Id;
                     this.Hide();
                     Main_Form main = new Main_Form();
                     main.Show();

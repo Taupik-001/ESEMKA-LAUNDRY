@@ -87,7 +87,7 @@
             this.input_password.Size = new System.Drawing.Size(100, 20);
             this.input_password.TabIndex = 4;
             this.input_password.UseSystemPasswordChar = true;
-            this.input_password.Text = "fkuXmGlww@1";
+            this.input_password.Text = "fkuXmGlww";
             // 
             // btn_login
             // 
