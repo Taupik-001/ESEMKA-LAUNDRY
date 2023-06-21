@@ -257,7 +257,11 @@ namespace Test.Form_Application
 
         private void btn_insert_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 3c406e9311a38e4fe68d3e5dcc7be420a85b72ab
             ClearField();
             EnabledField(true);
             EnabledField(false, true);
